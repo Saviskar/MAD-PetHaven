@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/theme/color.dart';
 
 class WideButton extends StatelessWidget {
   final String placeholder;
