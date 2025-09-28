@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/create_account.dart';
+import 'package:pet_haven/pages/login.dart';
 import 'package:pet_haven/theme/theme.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: buildTheme(),
-      home: CreateAccount(),
+      home: Login(),
     );
   }
 }
