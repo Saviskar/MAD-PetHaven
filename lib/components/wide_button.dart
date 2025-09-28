@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/theme/color.dart';
 
 class WideButton extends StatelessWidget {
   final String placeholder;
-  final int fillColor;
+  final Color backgroundColor;
 
   const WideButton({
     super.key,
     required this.placeholder,
-    required this.fillColor,
+    required this.backgroundColor,
   });
 
   @override
@@ -15,7 +16,7 @@ class WideButton extends StatelessWidget {
     return TextButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(fillColor),
+        backgroundColor: backgroundColor,
         foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 56),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/components/input_field.dart';
 import 'package:pet_haven/components/wide_button.dart';
+import 'package:pet_haven/theme/color.dart';
 
 class CreateAccount extends StatelessWidget {
   const CreateAccount({super.key});
@@ -34,7 +35,10 @@ class CreateAccount extends StatelessWidget {
             InputField(
               hintText: 'Password',
             ), // make two rows one has the text password and other one has the view password button
-            WideButton(placeholder: 'Create Account', fillColor: 0xFFE53E3E),
+            WideButton(
+              placeholder: 'Create Account',
+              backgroundColor: AppColors.primary,
+            ),
             SizedBox(height: 20),
             Text(
               'Forgotten pasword?',
