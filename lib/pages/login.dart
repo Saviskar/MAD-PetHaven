@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/input_field.dart';
 import 'package:pet_haven/components/wide_button.dart';
 import 'package:pet_haven/theme/color.dart';
@@ -9,16 +10,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: const Text(
-          'Pet Haven',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 4,
-        shadowColor: Colors.black.withValues(alpha: 0.3),
-      ),
+      appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
       body: Padding(
         padding: const EdgeInsets.all(40),
         child: Column(
