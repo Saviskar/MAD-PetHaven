@@ -51,9 +51,9 @@ class AppBottomNavigationBar extends StatelessWidget {
         onTap: onTap,
 
         // Colors
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.navbarBackground,
         selectedItemColor: AppColors.primary,
-        unselectedItemColor: Colors.grey.shade600,
+        unselectedItemColor: AppColors.navbarUnselectedItem,
 
         // Label styles
         showUnselectedLabels: true,
