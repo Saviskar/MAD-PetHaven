@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/theme/color.dart';
 
+/// A custom bottom navigation bar for the Pet Haven app.
+///
+/// Wraps Flutter's [BottomNavigationBar] inside a [Material] widget
+/// to provide elevation, shadow, and consistent styling across pages.
+///
+/// Features:
+/// - Four tabs: Home, Shop, Cart, and Profile.
+/// - Active tab highlighted with [AppColors.primary].
+/// - Optional shadow and elevation for a raised appearance.
+/// - Supports label and icon customization.
+/// - Exposes [currentIndex] and [onTap] to allow parent widgets to
+///   control and respond to navigation changes.
 class AppBottomNavigationBar extends StatelessWidget {
+  /// The index of the currently selected tab.
+  ///
+  /// Determines which tab is highlighted as active.
   final int currentIndex;
+
+  /// Callback triggered when a navigation item is tapped.
+  ///
+  /// Provides the tapped item's index.
   final ValueChanged<int> onTap;
 
+  /// Creates a Pet Haven [AppBottomNavigationBar].
+  ///
+  /// The [currentIndex] and [onTap] must not be null.
   const AppBottomNavigationBar({
     super.key,
     required this.currentIndex,
@@ -13,33 +35,36 @@ class AppBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final cs = Theme.of(context).colorScheme;
-
     return Material(
-      // gives elevation shadow
+      /// Provides elevation and drop shadow to the navigation bar.
       elevation: 8,
+
+      /// Semi-transparent shadow color for subtle depth.
       shadowColor: Colors.black.withValues(alpha: 0.08),
+
+      /// Ensures a consistent white background regardless of theme.
       color: Colors.white,
+
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: onTap,
 
-        // COLORS
+        // Colors
         backgroundColor: Colors.white,
-        selectedItemColor: AppColors.primary, // your brand red
+        selectedItemColor: AppColors.primary,
         unselectedItemColor: Colors.grey.shade600,
 
-        // LABEL STYLES
+        // Label styles
         showUnselectedLabels: true,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
 
-        // ANIMATION FEEL (size tween on icon)
-        selectedIconTheme: const IconThemeData(size: 28),
+        // Icon themes (equal sizes to prevent bounce effect)
+        selectedIconTheme: const IconThemeData(size: 24),
         unselectedIconTheme: const IconThemeData(size: 24),
 
-        // ITEMS (provide activeIcon to smoothen transition)
+        // Navigation items
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
