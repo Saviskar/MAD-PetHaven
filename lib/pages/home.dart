@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/components/custom_card.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/hero_banner.dart';
 import 'package:pet_haven/components/input_field.dart';
 import 'package:pet_haven/components/our_category.dart';
-import 'package:pet_haven/components/our_promotion_card.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -69,25 +69,35 @@ class Home extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  OurPromotionCard(
+                  CustomCard(
                     title: 'Dog Food',
                     imagePath: 'assets/images/dog_food.png',
+                    width: 140,
+                    margin: const EdgeInsets.only(right: 15),
                   ),
-                  OurPromotionCard(
+                  CustomCard(
                     title: 'Dog Food',
                     imagePath: 'assets/images/dog_food.png',
+                    width: 140,
+                    margin: const EdgeInsets.only(right: 15),
                   ),
-                  OurPromotionCard(
+                  CustomCard(
                     title: 'Dog Food',
                     imagePath: 'assets/images/dog_food.png',
+                    width: 140,
+                    margin: const EdgeInsets.only(right: 15),
                   ),
-                  OurPromotionCard(
+                  CustomCard(
                     title: 'Dog Food',
                     imagePath: 'assets/images/dog_food.png',
+                    width: 140,
+                    margin: const EdgeInsets.only(right: 15),
                   ),
-                  OurPromotionCard(
+                  CustomCard(
                     title: 'Dog Food',
                     imagePath: 'assets/images/dog_food.png',
+                    width: 140,
+                    margin: const EdgeInsets.only(right: 15),
                   ),
                 ],
               ),
