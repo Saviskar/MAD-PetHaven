@@ -1,16 +1,56 @@
-# pet_haven
+When people say “stack-based navigation” in Flutter (or mobile apps in general), they’re talking about the way pages (screens) are managed using a stack data structure → LIFO (Last In, First Out).
 
-A new Flutter project.
+🔑 How it works
 
-## Getting Started
+Think of it like a stack of plates:
 
-This project is a starting point for a Flutter application.
+Navigator.push() → puts (pushes) a new page on top.
 
-A few resources to get you started if this is your first Flutter project:
+Navigator.pop() → removes (pops) the top page, revealing the one under it.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The user only ever sees the top page.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+📌 Example in Flutter
+// Go from LoginPage → CreateAccountPage
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const CreateAccountPage()),
+);
+
+// Go back
+Navigator.pop(context);
+
+
+Start: [LoginPage]
+
+Push CreateAccount → [LoginPage, CreateAccountPage] (top = CreateAccountPage)
+
+Pop → back to [LoginPage]
+
+
+
+✅ Benefits of stack-based navigation
+
+Natural “back” behavior (Android back button / iOS swipe).
+
+Easy to follow flows (e.g., Login → OTP → Home).
+
+Keeps history → you can return to the previous screen.
+
+
+
+
+❌ Downsides
+
+If you push too many pages without managing the stack, memory can grow.
+
+Not ideal for things like bottom navigation, where you want tabs side by side (there you usually swap pages instead of pushing).
+
+
+
+
+
+👉 So, stack-based = you’re literally managing screens like a stack (push new ones, pop old ones).
+
