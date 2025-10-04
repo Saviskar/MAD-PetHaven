@@ -1,4 +1,3 @@
-// components/custom_card.dart
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
@@ -39,13 +38,12 @@ class CustomCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // square, responsive image (no fixed w/h)
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
               ),
               child: AspectRatio(
-                aspectRatio: 1, // square like your mock
+                aspectRatio: 1,
                 child: Image.asset(imagePath, fit: BoxFit.cover),
               ),
             ),

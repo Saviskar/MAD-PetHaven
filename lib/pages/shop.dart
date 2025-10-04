@@ -3,29 +3,16 @@ import 'package:pet_haven/components/bread_crumb.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/input_field.dart';
 import 'package:pet_haven/components/custom_card.dart';
-
-class Product {
-  final String title;
-  final String imagePath;
-  const Product(this.title, this.imagePath);
-}
-
-const products = <Product>[
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-  Product('Dog Food', 'assets/images/dog_food.png'),
-];
+import 'package:pet_haven/data/product_repository.dart';
+import 'package:pet_haven/pages/product_detail_page.dart';
 
 class Shop extends StatelessWidget {
   const Shop({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final products = ProductRepository().all();
+
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
       body: SingleChildScrollView(
@@ -34,10 +21,12 @@ class Shop extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InputField(hintText: 'Search for pet supplies'),
+
+            // Categories Row
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
+                children: const [
                   BreadCrumb(title: 'All Products', icon: Icons.apps),
                   SizedBox(width: 10),
                   BreadCrumb(title: 'Accessories', icon: Icons.shopping_bag),
@@ -53,46 +42,43 @@ class Shop extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20),
-
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'All Products',
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
             ),
-
             const SizedBox(height: 12),
 
-            LayoutBuilder(
-              builder: (context, constraints) {
-                int cols;
-                final w = constraints.maxWidth;
-                if (w >= 1000)
-                  cols = 5;
-                else if (w >= 800)
-                  cols = 4;
-                else if (w >= 600)
-                  cols = 3;
-                else
-                  cols = 2;
-
-                return GridView.builder(
-                  shrinkWrap: true, // important inside SingleChildScrollView
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: cols,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    // Card look in screenshot = square image + label; let height breathe:
-                    childAspectRatio: 0.82,
-                  ),
-                  itemBuilder: (context, i) {
-                    final p = products[i];
-                    return CustomCard(title: p.title, imagePath: p.imagePath);
+            // Products Grid
+            GridView.builder(
+              itemCount: products.length,
+              shrinkWrap: true, // for automatic sizing
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.82,
+              ),
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return CustomCard(
+                  title: product.name,
+                  imagePath: product.imageAsset,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            ProductDetailPage(productId: product.id),
+                      ),
+                    );
                   },
                 );
               },
             ),
+
             const SizedBox(height: 16),
           ],
         ),
