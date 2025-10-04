@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:pet_haven/components/bottom_navigation.dart';
-// import 'package:pet_haven/pages/home.dart';
 import 'package:pet_haven/pages/main_screen.dart';
-// import 'package:pet_haven/pages/login.dart';
 import 'package:pet_haven/theme/theme.dart';
 
 void main() {
@@ -16,8 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: buildTheme(),
+      debugShowCheckedModeBanner: false,
+      title: 'Pet Haven',
+      themeMode: ThemeMode.system,
+      theme: buildLightTheme(),
+      darkTheme: buildDarkTheme(),
       home: MainScreen(),
     );
   }
