@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/data/cart_manager.dart';
 import 'package:pet_haven/data/product_repository.dart';
 import 'package:pet_haven/theme/color.dart';
 
@@ -101,12 +102,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           const SizedBox(height: 24),
 
           TextButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Added $quantity × ${product.name} to cart'),
-                ),
-              );
+            onPressed: () async {
+              await CartManager().add(product.id, quantity: quantity);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Added $quantity x ${product.name}')),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
