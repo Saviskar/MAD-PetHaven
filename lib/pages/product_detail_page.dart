@@ -25,25 +25,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          AspectRatio(
-            aspectRatio: 1.4,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(product.imageAsset, fit: BoxFit.cover),
-            ),
-          ),
-          const SizedBox(height: 16),
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
+    Widget productImage({EdgeInsetsGeometry? margin}) {
+      return Container(
+        margin: margin,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: AspectRatio(
+            aspectRatio: isLandscape ? 1 : 1.4,
+            child: Image.asset(product.imageAsset, fit: BoxFit.cover),
+          ),
+        ),
+      );
+    }
+
+    Widget detailsColumn() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
             product.name,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
           ),
-
           const SizedBox(height: 6),
           Text(
             'Rs. ${product.price.toStringAsFixed(2)}',
@@ -53,7 +58,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               color: AppColors.primary,
             ),
           ),
-
           const SizedBox(height: 16),
           const Divider(),
           const SizedBox(height: 10),
@@ -63,19 +67,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ),
           const SizedBox(height: 6),
           Text(product.description, style: const TextStyle(height: 1.4)),
-
           const SizedBox(height: 24),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
                 onPressed: () {
-                  if (quantity > 1) {
-                    setState(() => quantity--);
-                  }
+                  if (quantity > 1) setState(() => quantity--);
                 },
                 icon: const Icon(Icons.indeterminate_check_box_outlined),
+                tooltip: 'Decrease',
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -89,19 +90,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               IconButton(
                 onPressed: () {
-                  if (quantity < 10) {
-                    // optional max limit
-                    setState(() => quantity++);
-                  }
+                  if (quantity < 10) setState(() => quantity++);
                 },
                 icon: const Icon(Icons.add_box_outlined),
+                tooltip: 'Increase',
               ),
             ],
           ),
-
           const SizedBox(height: 24),
 
-          TextButton(
+          ElevatedButton(
             onPressed: () async {
               await CartManager().add(product.id, quantity: quantity);
               if (mounted) {
@@ -118,9 +116,43 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: Text('Add to Cart'),
+            child: const Text('Add to Cart'),
           ),
         ],
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text(product.name)),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (isLandscape && constraints.maxWidth > 600) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // left column
+                  Expanded(flex: 5, child: productImage()),
+                  const SizedBox(width: 24),
+                  // right column
+                  Expanded(
+                    flex: 7,
+                    child: SingleChildScrollView(child: detailsColumn()),
+                  ),
+                ],
+              );
+            }
+
+            return ListView(
+              children: [
+                productImage(),
+                const SizedBox(height: 16),
+                detailsColumn(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
