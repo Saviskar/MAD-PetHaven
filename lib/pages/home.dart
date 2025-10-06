@@ -60,7 +60,11 @@ class Home extends StatelessWidget {
 
             const Text(
               'Our Promotions',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+              ),
             ),
 
             SizedBox(height: 12),

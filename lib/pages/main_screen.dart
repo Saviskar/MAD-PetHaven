@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/components/app_bottom_navigation.dart';
+import 'package:pet_haven/pages/cart.dart';
 import 'package:pet_haven/pages/home.dart';
+import 'package:pet_haven/pages/profile.dart';
 import 'package:pet_haven/pages/shop.dart';
 
 /// The main container widget for the Pet Haven app.
@@ -41,8 +43,8 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = const [
     Home(key: PageStorageKey('home')),
     Shop(key: PageStorageKey('shop')),
-    Center(child: Text("Cart Page")),
-    Center(child: Text("Profile Page")),
+    Cart(key: PageStorageKey('cart')),
+    Profile(key: PageStorageKey('profile')),
   ];
 
   @override
