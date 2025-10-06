@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 class WideButton extends StatelessWidget {
   final String placeholder;
   final Color backgroundColor;
+  final VoidCallback? onPressed;
 
   const WideButton({
     super.key,
     required this.placeholder,
     required this.backgroundColor,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         foregroundColor: Colors.white,
