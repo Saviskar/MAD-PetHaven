@@ -42,7 +42,6 @@ class Shop extends StatelessWidget {
                 InputField(hintText: 'Search for pet supplies'),
 
                 // Categories Row (kept as horizontal scroll like your Home page)
-                const SizedBox(height: 12),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -89,6 +88,7 @@ class Shop extends StatelessWidget {
                     return CustomCard(
                       title: product.name,
                       imagePath: product.imageAsset,
+                      price: product.price,
                       onTap: () {
                         Navigator.push(
                           context,
