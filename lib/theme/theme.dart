@@ -16,6 +16,11 @@ ThemeData buildLightTheme() {
       elevation: 0,
       surfaceTintColor: Colors.transparent,
     ),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor: AppColors.primary,
+      selectionColor: AppColors.primary,
+      cursorColor: AppColors.primary,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: scheme.surface,
