@@ -52,12 +52,6 @@ class Profile extends StatelessWidget {
               child: Column(
                 children: [
                   ProfileTile(
-                    icon: Icons.shopping_bag_outlined,
-                    title: 'My Orders',
-                    onTap: () {},
-                    scheme: scheme,
-                  ),
-                  ProfileTile(
                     icon: Icons.settings_outlined,
                     title: 'Settings',
                     onTap: () {},
