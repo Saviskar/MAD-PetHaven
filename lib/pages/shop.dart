@@ -32,7 +32,7 @@ class _ShopState extends State<Shop> {
       final bySearch =
           q.isEmpty ||
           p.name.toLowerCase().contains(q) ||
-          (p.description?.toLowerCase().contains(q) ?? false);
+          (p.description.toLowerCase().contains(q));
       return byCat && bySearch;
     }).toList();
   }
