@@ -16,6 +16,7 @@ class ProductRepository {
           'Ideal for adult dogs of all breeds.',
       price: 1990.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Food',
     ),
     Product(
       id: 2,
@@ -26,16 +27,7 @@ class ProductRepository {
           'Perfect for indoor exercise and stress relief.',
       price: 750.00,
       imageAsset: 'assets/images/dog_food.png',
-    ),
-    Product(
-      id: 3,
-      name: 'Bird Feeder',
-      description:
-          'A durable, window-mounted bird feeder with strong suction cups for easy installation. '
-          'Transparent acrylic design allows close-up bird watching while holding a variety of seeds. '
-          'Weather-resistant and easy to clean.',
-      price: 1450.00,
-      imageAsset: 'assets/images/dog_food.png',
+      category: 'Toys',
     ),
     Product(
       id: 4,
@@ -46,6 +38,7 @@ class ProductRepository {
           'Ergonomic grip ensures easy use and streak-free cleaning.',
       price: 2200.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 5,
@@ -56,6 +49,7 @@ class ProductRepository {
           '1.5 meters in length, suitable for dogs of all sizes.',
       price: 1200.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 6,
@@ -66,6 +60,7 @@ class ProductRepository {
           'Includes a stable wooden base for extra safety.',
       price: 3200.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Toys',
     ),
     Product(
       id: 7,
@@ -76,6 +71,7 @@ class ProductRepository {
           'Ideal for parakeets, cockatiels, and small parrots.',
       price: 850.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 8,
@@ -86,6 +82,7 @@ class ProductRepository {
           'Suitable for aquariums up to 60 liters.',
       price: 3500.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 9,
@@ -96,6 +93,7 @@ class ProductRepository {
           'pH-balanced and safe for regular use.',
       price: 950.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Grooming',
     ),
     Product(
       id: 10,
@@ -106,6 +104,7 @@ class ProductRepository {
           'Long-lasting and safe for multi-cat households.',
       price: 1850.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 11,
@@ -116,6 +115,7 @@ class ProductRepository {
           'Supports healthy feathers, energy levels, and beak strength.',
       price: 2100.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Food',
     ),
     Product(
       id: 12,
@@ -126,6 +126,7 @@ class ProductRepository {
           'Floats longer in water to encourage active feeding.',
       price: 600.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Food',
     ),
     Product(
       id: 13,
@@ -136,6 +137,7 @@ class ProductRepository {
           'Ideal for medium-sized breeds such as Beagles and Cocker Spaniels.',
       price: 4800.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 14,
@@ -146,6 +148,7 @@ class ProductRepository {
           'Foldable design makes it convenient for travel and storage.',
       price: 4200.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Accessories',
     ),
     Product(
       id: 15,
@@ -156,6 +159,7 @@ class ProductRepository {
           'Packed in a resealable bag to preserve freshness.',
       price: 1350.00,
       imageAsset: 'assets/images/dog_food.png',
+      category: 'Food',
     ),
   ];
 

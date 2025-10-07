@@ -3,15 +3,43 @@ import 'package:pet_haven/components/bread_crumb.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/input_field.dart';
 import 'package:pet_haven/components/custom_card.dart';
+import 'package:pet_haven/data/product.dart';
 import 'package:pet_haven/data/product_repository.dart';
 import 'package:pet_haven/pages/product_detail_page.dart';
 
-class Shop extends StatelessWidget {
+class Shop extends StatefulWidget {
   const Shop({super.key});
 
   @override
+  State<Shop> createState() => _ShopState();
+}
+
+class _ShopState extends State<Shop> {
+  final _repo = ProductRepository();
+  String _selectedCategory = 'All Products';
+  String _search = '';
+
+  // TODO: Replace this with Product.category once you add that field to your model.
+  // Temporary keyword-based categorization so filtering works right now.
+  bool _matchesCategory(Product p) =>
+      _selectedCategory == 'All Products' || p.category == _selectedCategory;
+
+  List<Product> _filteredProducts() {
+    final all = _repo.all();
+    final q = _search.trim().toLowerCase();
+    return all.where((p) {
+      final byCat = _matchesCategory(p);
+      final bySearch =
+          q.isEmpty ||
+          p.name.toLowerCase().contains(q) ||
+          (p.description?.toLowerCase().contains(q) ?? false);
+      return byCat && bySearch;
+    }).toList();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final products = ProductRepository().all();
+    final products = _filteredProducts();
 
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
@@ -31,7 +59,6 @@ class Shop extends StatelessWidget {
             cols = 2;
           }
 
-          // Spacing scales a touch with width (subtle polish)
           final spacing = width >= 900 ? 16.0 : 12.0;
 
           return SingleChildScrollView(
@@ -39,42 +66,46 @@ class Shop extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InputField(hintText: 'Search for pet supplies'),
+                // Search
+                InputField(
+                  hintText: 'Search for pet supplies',
+                  onChanged: (val) => setState(() => _search = val),
+                ),
 
-                // Categories Row (kept as horizontal scroll like your Home page)
+                const SizedBox(height: 10),
+
+                // Categories Row (functional now)
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: const [
-                      BreadCrumb(title: 'All Products', icon: Icons.apps),
-                      SizedBox(width: 10),
-                      BreadCrumb(
-                        title: 'Accessories',
-                        icon: Icons.shopping_bag,
-                      ),
-                      SizedBox(width: 10),
-                      BreadCrumb(title: 'Cat Food', icon: Icons.pets),
-                      SizedBox(width: 10),
-                      BreadCrumb(title: 'Dog Food', icon: Icons.restaurant),
-                      SizedBox(width: 10),
-                      BreadCrumb(title: 'Grooming', icon: Icons.cut),
-                      SizedBox(width: 10),
-                      BreadCrumb(title: 'Toys', icon: Icons.sports_esports),
+                    children: [
+                      _crumb('All Products', Icons.apps),
+                      const SizedBox(width: 10),
+                      _crumb('Accessories', Icons.shopping_bag),
+                      const SizedBox(width: 10),
+                      _crumb('Food', Icons.restaurant),
+                      const SizedBox(width: 10),
+                      _crumb('Grooming', Icons.cut),
+                      const SizedBox(width: 10),
+                      _crumb('Toys', Icons.sports_esports),
                     ],
                   ),
                 ),
 
                 const SizedBox(height: 20),
-                const Text(
-                  'All Products',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                Text(
+                  _selectedCategory,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
                 ),
                 const SizedBox(height: 12),
 
                 // Responsive Products Grid
                 GridView.builder(
                   itemCount: products.length,
-                  shrinkWrap: true, // allow grid to size inside the page scroll
+                  shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -108,6 +139,15 @@ class Shop extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _crumb(String title, IconData icon) {
+    return BreadCrumb(
+      title: title,
+      icon: icon,
+      selected: _selectedCategory == title,
+      onTap: () => setState(() => _selectedCategory = title),
     );
   }
 }
