@@ -69,7 +69,7 @@ class _CartState extends State<Cart> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
+                      color: Colors.black.withValues(alpha: 0.06),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -151,7 +151,7 @@ class _CartState extends State<Cart> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -191,30 +191,73 @@ class _CartState extends State<Cart> {
 
             const SizedBox(height: 16),
 
-            // Clear Cart
+            // Clear Cart (Styled Dialog)
             WideButton(
               placeholder: 'Clear Cart',
               backgroundColor: Colors.red.shade400,
               onPressed: () async {
                 final confirmed = await showDialog<bool>(
                   context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text('Clear Cart'),
-                    content: const Text(
-                      'Are you sure you want to remove all items from your cart?',
+                  builder: (ctx) => Theme(
+                    data: Theme.of(context).copyWith(
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                        ),
+                      ),
+                      dialogTheme: DialogThemeData(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                      ),
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
-                        child: const Text('Cancel'),
+                    child: AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      FilledButton(
-                        onPressed: () => Navigator.pop(ctx, true),
-                        child: const Text('Clear All'),
+                      title: Text(
+                        'Clear Cart',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                    ],
+                      content: const Text(
+                        'Are you sure you want to remove all items from your cart?',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      actionsPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, false),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Colors.red.shade600,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () => Navigator.pop(ctx, true),
+                          child: const Text(
+                            'Clear All',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
+
                 if (confirmed == true) {
                   await cart.clear();
                   if (mounted) setState(() {});
@@ -246,7 +289,7 @@ class _CartState extends State<Cart> {
         Text(
           k,
           style: TextStyle(
-            color: scheme.onSurface.withOpacity(0.8),
+            color: scheme.onSurface.withValues(alpha: 0.8),
             fontSize: 14.5,
           ),
         ),
@@ -280,7 +323,7 @@ class _QtyBox extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.outline.withOpacity(0.4)),
+        border: Border.all(color: scheme.outline.withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -316,7 +359,9 @@ class _QtyBox extends StatelessWidget {
         height: 36,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.4),
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
         ),
         child: Icon(icon, size: 22),
       ),
