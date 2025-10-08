@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
-import 'package:pet_haven/widgets/wide_button.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class CreateAccount extends StatelessWidget {
