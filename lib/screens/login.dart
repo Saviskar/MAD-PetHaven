@@ -1,7 +1,7 @@
 // lib/pages/login.dart
 import 'package:flutter/material.dart';
-import 'package:pet_haven/pages/create_account.dart';
-import 'package:pet_haven/pages/main_screen.dart';
+import 'package:pet_haven/screens/create_account.dart';
+import 'package:pet_haven/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/input_field.dart';
