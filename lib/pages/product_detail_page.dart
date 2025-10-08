@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:pet_haven/data/cart_manager.dart';
 import 'package:pet_haven/data/product_repository.dart';
@@ -13,6 +15,8 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int quantity = 1;
+  String? selectedWeight;
+  String? selectedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         body: const Center(child: Text('Product not found')),
       );
     }
+
+    selectedWeight ??= (product.quantities?.isNotEmpty ?? false)
+        ? product.quantities!.first
+        : null;
+
+    selectedColor ??= (product.colors?.isNotEmpty ?? false)
+        ? product.colors!.first
+        : null;
 
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
@@ -61,6 +73,52 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           const SizedBox(height: 16),
           const Divider(),
           const SizedBox(height: 10),
+
+          // ----- Variant Quantity radios (only if present) -----
+          if (product.quantities != null && product.quantities!.isNotEmpty) ...[
+            Text(
+              'Quantity / Size',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 6),
+            ...product.quantities!.map((opt) {
+              return RadioListTile<String>(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                title: Text(opt),
+                activeColor: AppColors.primary,
+                value: opt,
+                groupValue: selectedWeight,
+                onChanged: (value) => setState(() => selectedWeight = value),
+              );
+            }),
+            const SizedBox(height: 8),
+          ],
+
+          // ----- Color radios (only if present) -----
+          if (product.colors != null && product.colors!.isNotEmpty) ...[
+            Text(
+              'Color',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 6),
+            ...product.colors!.map((opt) {
+              return RadioListTile<String>(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                title: Text(opt),
+                value: opt,
+                groupValue: selectedColor,
+                onChanged: (value) => setState(() => selectedColor = value),
+              );
+            }),
+            const SizedBox(height: 8),
+          ],
+
           const Text(
             'Description',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
