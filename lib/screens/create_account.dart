@@ -31,12 +31,18 @@ class CreateAccount extends StatelessWidget {
             InputField(hintText: 'Email Address'),
             InputField(hintText: 'Mobile Number'),
             InputField(hintText: 'Delivery Address'),
-            InputField(
-              hintText: 'Password',
-            ), // make two rows one has the text password and other one has the view password button
-            WideButton(
-              placeholder: 'Create Account',
-              backgroundColor: AppColors.primary,
+            InputField(hintText: 'Password'),
+            TextButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 56),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text('Create Account'),
             ),
             SizedBox(height: 20),
             Text(

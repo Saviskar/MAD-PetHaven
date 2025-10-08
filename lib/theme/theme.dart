@@ -16,16 +16,19 @@ ThemeData buildLightTheme() {
       elevation: 0,
       surfaceTintColor: Colors.transparent,
     ),
+
     textSelectionTheme: TextSelectionThemeData(
-      selectionHandleColor: AppColors.primary,
-      selectionColor: AppColors.primary,
       cursorColor: AppColors.primary,
+      selectionColor: AppColors.primary.withValues(alpha: 0.3),
+      selectionHandleColor: AppColors.primary,
     ),
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: scheme.surface,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: scheme.surface,
       selectedItemColor: AppColors.primary,
@@ -56,23 +59,29 @@ ThemeData buildDarkTheme() {
       elevation: 0,
       surfaceTintColor: Colors.transparent,
     ),
+
+    // 👇 Add this block here too
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColors.primary,
+      selectionColor: AppColors.primary.withValues(alpha: 0.4),
+      selectionHandleColor: AppColors.primary,
+    ),
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: scheme.surface,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.black, // darker bg for contrast
 
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.black,
       selectedIconTheme: IconThemeData(size: 24, color: AppColors.primary),
       unselectedIconTheme: IconThemeData(size: 24, color: Colors.grey),
       selectedLabelStyle: TextStyle(
-        color: AppColors.primary, // ✅ white text
+        color: AppColors.primary,
         fontWeight: FontWeight.bold,
       ),
-      unselectedLabelStyle: TextStyle(
-        color: Colors.white, // ✅ white text
-      ),
+      unselectedLabelStyle: TextStyle(color: Colors.white),
       showUnselectedLabels: true,
     ),
   );

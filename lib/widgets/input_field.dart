@@ -31,6 +31,7 @@ class InputField extends StatelessWidget {
           obscureText: obscureText,
           onChanged: onChanged,
           validator: validator,
+          cursorColor: AppColors.primary,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
