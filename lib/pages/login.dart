@@ -41,7 +41,6 @@ class _LoginState extends State<Login> {
     setState(() => _submitting = false);
 
     if (ok && mounted) {
-      // Option A: if you keep AuthGate, this is still safe
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const MainScreen()),
         (route) => false,
