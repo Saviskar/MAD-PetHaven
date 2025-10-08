@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
 import 'package:pet_haven/components/profile_titles.dart';
+import 'package:pet_haven/pages/about_app.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class Profile extends StatelessWidget {
@@ -60,7 +61,12 @@ class Profile extends StatelessWidget {
                   ProfileTile(
                     icon: Icons.info_outline,
                     title: 'About App',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AboutApp()),
+                      );
+                    },
                     scheme: scheme,
                   ),
                 ],
