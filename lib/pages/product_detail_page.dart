@@ -111,6 +111,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 dense: true,
                 contentPadding: EdgeInsets.zero,
                 title: Text(opt),
+                activeColor: AppColors.primary,
                 value: opt,
                 groupValue: selectedColor,
                 onChanged: (value) => setState(() => selectedColor = value),
