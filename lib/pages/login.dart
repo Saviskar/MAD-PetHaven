@@ -1,5 +1,6 @@
 // lib/pages/login.dart
 import 'package:flutter/material.dart';
+import 'package:pet_haven/pages/create_account.dart';
 import 'package:pet_haven/pages/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_haven/components/custom_app_bar.dart';
@@ -114,10 +115,15 @@ class _LoginState extends State<Login> {
 
                   const SizedBox(height: 12),
 
-                  // Optional: "Create Account" (non-functional in demo)
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Create Account'),
+                  WideButton(
+                    placeholder: 'Create Account',
+                    backgroundColor: AppColors.primary,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => CreateAccount()),
+                      );
+                    },
                   ),
                 ],
               ),
