@@ -3,16 +3,34 @@ import 'package:pet_haven/theme/color.dart';
 
 class InputField extends StatelessWidget {
   final String hintText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
 
-  const InputField({super.key, required this.hintText, this.onChanged});
+  const InputField({
+    super.key,
+    required this.hintText,
+    this.controller,
+    this.keyboardType,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.validator,
+    this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
           onChanged: onChanged,
+          validator: validator,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusedBorder: OutlineInputBorder(
@@ -22,10 +40,10 @@ class InputField extends StatelessWidget {
             filled: true,
             fillColor: AppColors.background,
             hintText: hintText,
+            suffixIcon: suffixIcon,
           ),
         ),
-
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
