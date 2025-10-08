@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/data/cart_manager.dart';
 import 'package:pet_haven/data/product_repository.dart';
-import 'package:pet_haven/components/wide_button.dart';
+import 'package:pet_haven/widgets/wide_button.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});

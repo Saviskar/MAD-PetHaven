@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/components/custom_app_bar.dart';
-import 'package:pet_haven/components/profile_titles.dart';
+import 'package:pet_haven/widgets/custom_app_bar.dart';
+import 'package:pet_haven/widgets/profile_titles.dart';
 import 'package:pet_haven/screens/about_app.dart';
 import 'package:pet_haven/theme/color.dart';
 

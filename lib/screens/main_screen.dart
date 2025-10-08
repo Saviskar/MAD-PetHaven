@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/components/app_bottom_navigation.dart';
+import 'package:pet_haven/widgets/app_bottom_navigation.dart';
 import 'package:pet_haven/screens/cart.dart';
 import 'package:pet_haven/screens/home.dart';
 import 'package:pet_haven/screens/profile.dart';

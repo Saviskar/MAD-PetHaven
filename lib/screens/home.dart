@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/components/custom_card.dart';
-import 'package:pet_haven/components/custom_app_bar.dart';
-import 'package:pet_haven/components/hero_banner.dart';
-import 'package:pet_haven/components/input_field.dart';
-import 'package:pet_haven/components/our_category.dart';
+import 'package:pet_haven/widgets/custom_card.dart';
+import 'package:pet_haven/widgets/custom_app_bar.dart';
+import 'package:pet_haven/widgets/hero_banner.dart';
+import 'package:pet_haven/widgets/input_field.dart';
+import 'package:pet_haven/widgets/our_category.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

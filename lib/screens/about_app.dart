@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/components/custom_app_bar.dart';
+import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class AboutApp extends StatelessWidget {

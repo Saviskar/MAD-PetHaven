@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pet_haven/screens/create_account.dart';
 import 'package:pet_haven/screens/main_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:pet_haven/components/custom_app_bar.dart';
-import 'package:pet_haven/components/input_field.dart';
-import 'package:pet_haven/components/wide_button.dart';
+import 'package:pet_haven/widgets/custom_app_bar.dart';
+import 'package:pet_haven/widgets/input_field.dart';
+import 'package:pet_haven/widgets/wide_button.dart';
 import 'package:pet_haven/theme/color.dart';
 import 'package:pet_haven/data/auth_manager.dart';
 

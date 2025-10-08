@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/components/bread_crumb.dart';
-import 'package:pet_haven/components/custom_app_bar.dart';
-import 'package:pet_haven/components/input_field.dart';
-import 'package:pet_haven/components/custom_card.dart';
+import 'package:pet_haven/widgets/bread_crumb.dart';
+import 'package:pet_haven/widgets/custom_app_bar.dart';
+import 'package:pet_haven/widgets/input_field.dart';
+import 'package:pet_haven/widgets/custom_card.dart';
 import 'package:pet_haven/data/product.dart';
 import 'package:pet_haven/data/product_repository.dart';
 import 'package:pet_haven/screens/product_detail_page.dart';
