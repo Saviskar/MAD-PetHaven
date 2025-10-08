@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/data/auth_manager.dart';
+import 'package:pet_haven/screens/login.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/profile_titles.dart';
 import 'package:pet_haven/screens/about_app.dart';
 import 'package:pet_haven/theme/color.dart';
+import 'package:pet_haven/widgets/wide_button.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -76,23 +80,18 @@ class Profile extends StatelessWidget {
             const SizedBox(height: 30),
 
             // Logout Button
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red.shade500,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 54),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ),
+            WideButton(
+              placeholder: 'Logout',
+              backgroundColor: AppColors.primary,
+              onPressed: () async {
+                await context.read<AuthManager>().logout();
+                if (context.mounted) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const Login()),
+                    (route) => false,
+                  );
+                }
+              },
             ),
           ],
         ),
