@@ -53,8 +53,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
       body: Center(
