@@ -95,7 +95,7 @@ class _LoginState extends State<Login> {
                           setState(() => _showPassword = !_showPassword),
                     ),
                     validator: (v) =>
-                        (v == null || v.length < 6) ? 'Min 4 characters' : null,
+                        (v == null || v.length < 6) ? 'Min 6 characters' : null,
                   ),
 
                   const SizedBox(height: 8),

@@ -27,7 +27,7 @@ class ProductRepository {
           'Features a built-in jingle bell that creates sound during play to keep your feline engaged and active. '
           'Perfect for indoor exercise and stress relief.',
       price: 750.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/cat_toy_mouse.png',
       category: 'Toys',
       colors: ['Brown', 'Grey', 'Black'],
       quantities: ['Single', 'Pack of 3'],
@@ -40,7 +40,7 @@ class ProductRepository {
           'The strong magnet allows you to clean algae without getting your hands wet. '
           'Ergonomic grip ensures easy use and streak-free cleaning.',
       price: 2200.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/fish_tank_cleaner.jpg',
       category: 'Accessories',
       quantities: ['Small', 'Medium', 'Large'],
     ),
@@ -52,7 +52,7 @@ class ProductRepository {
           'Features a rust-resistant metal clasp and reflective stitching for nighttime walks. '
           'Suitable for dogs of all sizes.',
       price: 1200.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/dog_leash.jpg',
       category: 'Accessories',
       colors: ['Red', 'Blue', 'Black'],
       quantities: ['1m', '1.5m', '2m'],
@@ -65,7 +65,7 @@ class ProductRepository {
           'Encourages healthy claws while preventing damage to your furniture. '
           'Includes a stable wooden base for extra safety.',
       price: 3200.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/cat_scratching_post.jpg',
       category: 'Toys',
       colors: ['Beige', 'Brown'],
       quantities: ['Short', 'Standard', 'Tall'],
@@ -78,7 +78,7 @@ class ProductRepository {
           'Made with natural wood and non-toxic rope, it promotes exercise and reduces boredom. '
           'Ideal for parakeets, cockatiels, and small parrots.',
       price: 850.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/bird_cage_swing.jpg',
       category: 'Accessories',
       colors: ['Wood', 'White'],
       quantities: ['Small', 'Medium'],
@@ -91,7 +91,7 @@ class ProductRepository {
           'Helps maintain crystal-clear water while being whisper-quiet. '
           'Suitable for aquariums up to 60 liters.',
       price: 3500.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/aquarium_filter_pump.jpg',
       category: 'Accessories',
       quantities: ['40L', '60L', '80L'],
     ),
@@ -103,7 +103,7 @@ class ProductRepository {
           'Leaves coats soft, shiny, and smelling fresh with natural lavender extracts. '
           'pH-balanced and safe for regular use.',
       price: 950.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/dog_shampoo.jpg',
       category: 'Grooming',
       quantities: ['250ml', '500ml'],
     ),
@@ -115,7 +115,7 @@ class ProductRepository {
           'Dust-free and easy to scoop, keeping your cat’s litter box fresh and hygienic. '
           'Long-lasting and safe for multi-cat households.',
       price: 1850.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/cat_litter.jpg',
       category: 'Accessories',
       quantities: ['5kg', '10kg'],
     ),
@@ -127,7 +127,7 @@ class ProductRepository {
           'Includes sunflower seeds, millet, dried fruits, and fortified vitamins. '
           'Supports healthy feathers, energy levels, and beak strength.',
       price: 2100.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/parrot_food_mix.jpg',
       category: 'Food',
       quantities: ['1kg', '2kg'],
     ),
@@ -139,7 +139,7 @@ class ProductRepository {
           'Suitable for goldfish, guppies, and most tropical fish. '
           'Floats longer in water to encourage active feeding.',
       price: 600.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/fish_food_flakes.jpg',
       category: 'Food',
       quantities: ['100g', '200g', '500g'],
     ),
@@ -151,7 +151,7 @@ class ProductRepository {
           'Designed with raised edges for extra comfort and security. '
           'Ideal for medium-sized breeds such as Beagles and Cocker Spaniels.',
       price: 4800.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/dog_bed.jpg',
       category: 'Accessories',
       colors: ['Brown', 'Grey', 'Black'],
       quantities: ['Small', 'Medium', 'Large'],
@@ -164,7 +164,7 @@ class ProductRepository {
           'Made with durable mesh panels for ventilation and a padded base for comfort. '
           'Foldable design makes it convenient for travel and storage.',
       price: 4200.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/cat_carrier_bag.jpg',
       category: 'Accessories',
       colors: ['Black', 'Blue', 'Pink'],
       quantities: ['Small', 'Medium'],
@@ -177,7 +177,7 @@ class ProductRepository {
           'High in fiber to support digestive health and dental care for rabbits, guinea pigs, and chinchillas. '
           'Packed in a resealable bag to preserve freshness.',
       price: 1350.00,
-      imageAsset: 'assets/images/dog_food.png',
+      imageAsset: 'assets/images/rabbit_hay.jpg',
       category: 'Food',
       quantities: ['1kg', '2kg', '5kg'],
     ),
