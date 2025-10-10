@@ -14,10 +14,8 @@ class ProfileSettings extends StatefulWidget {
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
-  // 🔹 Form key
   final _formKey = GlobalKey<FormState>();
 
-  // 🔹 Controllers
   late TextEditingController nameCtrl;
   late TextEditingController emailCtrl;
   late TextEditingController phoneCtrl;
@@ -48,7 +46,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   }
 
   void _saveChanges(BuildContext context) {
-    // ✅ Validate all fields before saving
     if (!_formKey.currentState!.validate()) return;
 
     context.read<UserManager>().updateProfile(
