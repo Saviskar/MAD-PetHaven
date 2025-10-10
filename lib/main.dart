@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/app/auth_gate.dart';
 import 'package:pet_haven/data/auth_manager.dart';
+import 'package:pet_haven/data/user_manager.dart';
 import 'package:pet_haven/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (_) => AuthManager(), child: const MyApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthManager()),
+        ChangeNotifierProvider(create: (_) => UserManager()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 
