@@ -14,6 +14,10 @@ class ProfileSettings extends StatefulWidget {
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
+  // 🔹 Form key
+  final _formKey = GlobalKey<FormState>();
+
+  // 🔹 Controllers
   late TextEditingController nameCtrl;
   late TextEditingController emailCtrl;
   late TextEditingController phoneCtrl;
@@ -44,12 +48,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   }
 
   void _saveChanges(BuildContext context) {
+    // ✅ Validate all fields before saving
+    if (!_formKey.currentState!.validate()) return;
+
     context.read<UserManager>().updateProfile(
-      fullName: nameCtrl.text,
-      email: emailCtrl.text,
-      mobile: phoneCtrl.text,
-      address: addressCtrl.text,
-      password: passCtrl.text,
+      fullName: nameCtrl.text.trim(),
+      email: emailCtrl.text.trim(),
+      mobile: phoneCtrl.text.trim(),
+      address: addressCtrl.text.trim(),
+      password: passCtrl.text.trim(),
       gender: gender,
     );
 
@@ -66,30 +73,108 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       appBar: CustomAppBar(appBarTitle: 'Profile Settings'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            InputField(controller: nameCtrl, hintText: 'Full Name'),
-            InputField(controller: emailCtrl, hintText: 'Email Address'),
-            InputField(controller: phoneCtrl, hintText: 'Mobile Number'),
-            InputField(controller: addressCtrl, hintText: 'Delivery Address'),
-            InputField(controller: passCtrl, hintText: 'Password'),
-            const SizedBox(height: 10),
-            DropdownButtonFormField(
-              items: const [
-                DropdownMenuItem(value: "Male", child: Text('Male')),
-                DropdownMenuItem(value: "Female", child: Text('Female')),
-                DropdownMenuItem(value: "Other", child: Text('Other')),
-              ],
-              onChanged: (value) => setState(() => gender = value!),
-              decoration: const InputDecoration(labelText: "Gender"),
-            ),
-            const SizedBox(height: 20),
-            WideButton(
-              placeholder: 'Save Changes',
-              backgroundColor: AppColors.primary,
-              onPressed: () => _saveChanges(context),
-            ),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              InputField(
+                controller: nameCtrl,
+                hintText: 'Full Name',
+                validator: (val) {
+                  if (val == null || val.trim().isEmpty) {
+                    return 'Please enter your full name';
+                  } else if (val.trim().length < 3) {
+                    return 'Name must be at least 3 characters long';
+                  }
+                  return null;
+                },
+              ),
+
+              InputField(
+                controller: emailCtrl,
+                hintText: 'Email Address',
+                keyboardType: TextInputType.emailAddress,
+                validator: (val) {
+                  if (val == null || val.trim().isEmpty) {
+                    return 'Please enter your email address';
+                  }
+                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                  if (!emailRegex.hasMatch(val.trim())) {
+                    return 'Enter a valid email address';
+                  }
+                  return null;
+                },
+              ),
+
+              InputField(
+                controller: phoneCtrl,
+                hintText: 'Mobile Number',
+                keyboardType: TextInputType.phone,
+                validator: (val) {
+                  if (val == null || val.trim().isEmpty) {
+                    return 'Please enter your mobile number';
+                  }
+                  final phoneRegex = RegExp(r'^[0-9]{10}$');
+                  if (!phoneRegex.hasMatch(val.trim())) {
+                    return 'Mobile number must be 10 digits';
+                  }
+                  return null;
+                },
+              ),
+
+              InputField(
+                controller: addressCtrl,
+                hintText: 'Delivery Address',
+                validator: (val) {
+                  if (val == null || val.trim().isEmpty) {
+                    return 'Please enter your delivery address';
+                  }
+                  return null;
+                },
+              ),
+
+              InputField(
+                controller: passCtrl,
+                hintText: 'Password',
+                obscureText: true,
+                validator: (val) {
+                  if (val == null || val.trim().isEmpty) {
+                    return 'Please enter your password';
+                  } else if (val.trim().length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 10),
+
+              DropdownButtonFormField<String>(
+                initialValue: gender,
+                items: const [
+                  DropdownMenuItem(value: "Male", child: Text('Male')),
+                  DropdownMenuItem(value: "Female", child: Text('Female')),
+                  DropdownMenuItem(value: "Other", child: Text('Other')),
+                ],
+                onChanged: (value) => setState(() => gender = value!),
+                decoration: const InputDecoration(labelText: "Gender"),
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return 'Please select your gender';
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 25),
+
+              WideButton(
+                placeholder: 'Save Changes',
+                backgroundColor: AppColors.primary,
+                onPressed: () => _saveChanges(context),
+              ),
+            ],
+          ),
         ),
       ),
     );
