@@ -20,6 +20,10 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode =
+        theme.brightness == Brightness.dark; // 👈 detect dark mode
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -27,19 +31,34 @@ class CustomCard extends StatelessWidget {
         width: width,
         margin: margin ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: Colors.white,
+          // 👇 Adaptive background color
+          color: isDarkMode
+              ? const Color(0xFF1E1E1E) // dark surface
+              : Colors.white,
+
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
+
+          // 👇 Gentle border only in dark mode for separation
+          border: isDarkMode
+              ? Border.all(color: Colors.grey.withOpacity(0.3))
+              : null,
+
+          // 👇 Light shadow only in light mode
+          boxShadow: isDarkMode
+              ? []
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
         ),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
@@ -49,6 +68,7 @@ class CustomCard extends StatelessWidget {
                 child: Image.asset(imagePath, fit: BoxFit.cover),
               ),
             ),
+
             const SizedBox(height: 8),
 
             // Title
@@ -59,9 +79,13 @@ class CustomCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
+                  color: isDarkMode
+                      ? Colors
+                            .white // 👈 readable on dark bg
+                      : Colors.black87,
                 ),
               ),
             ),
@@ -73,10 +97,14 @@ class CustomCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   'Rs. ${price!.toStringAsFixed(2)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey,
+                    color: isDarkMode
+                        ? Colors
+                              .grey
+                              .shade400 // 👈 softer in dark mode
+                        : Colors.grey.shade700,
                   ),
                 ),
               ),
