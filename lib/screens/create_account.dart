@@ -28,8 +28,6 @@ class CreateAccount extends StatelessWidget {
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 hintText: 'Gender',
-                filled: true,
-                fillColor: AppColors.background, // same as your input field bg
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 16,
@@ -60,6 +58,7 @@ class CreateAccount extends StatelessWidget {
                 DropdownMenuItem(value: "Female", child: Text('Female')),
                 DropdownMenuItem(value: "Other", child: Text('Other')),
               ],
+
               onChanged:
                   (
                     value,
