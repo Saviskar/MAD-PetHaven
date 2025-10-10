@@ -74,7 +74,7 @@ ThemeData buildDarkTheme() {
     ),
 
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 19, 19, 19),
       selectedIconTheme: IconThemeData(size: 24, color: AppColors.primary),
       unselectedIconTheme: IconThemeData(size: 24, color: Colors.grey),
       selectedLabelStyle: TextStyle(
