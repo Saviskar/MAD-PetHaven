@@ -57,7 +57,7 @@ class Profile extends StatelessWidget {
                 children: [
                   ProfileTile(
                     icon: Icons.settings_outlined,
-                    title: 'Settings',
+                    title: 'Profile Settings',
                     onTap: () {},
                     scheme: scheme,
                   ),
