@@ -26,9 +26,8 @@ class InputField extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    // 👇 Define adaptive colors for dark and light modes
     final backgroundColor = isDarkMode
-        ? const Color(0xFF1E1E1E) // dark surface
+        ? const Color(0xFF1E1E1E)
         : AppColors.background;
 
     final hintColor = isDarkMode ? Colors.grey.shade500 : Colors.grey.shade600;
@@ -48,14 +47,13 @@ class InputField extends StatelessWidget {
           onChanged: onChanged,
           validator: validator,
           cursorColor: AppColors.primary,
-          style: TextStyle(color: textColor), // 👈 text color adapts
+          style: TextStyle(color: textColor),
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(color: hintColor), // 👈 adaptive hint
+            hintStyle: TextStyle(color: hintColor),
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: backgroundColor, // 👈 adaptive background
-            // 👇 border styles
+            fillColor: backgroundColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: borderColor, width: 1),
