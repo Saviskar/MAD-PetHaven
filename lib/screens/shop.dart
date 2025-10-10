@@ -19,8 +19,6 @@ class _ShopState extends State<Shop> {
   String _selectedCategory = 'All Products';
   String _search = '';
 
-  // TODO: Replace this with Product.category once you add that field to your model.
-  // Temporary keyword-based categorization so filtering works right now.
   bool _matchesCategory(Product p) =>
       _selectedCategory == 'All Products' || p.category == _selectedCategory;
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/data/auth_manager.dart';
+import 'package:pet_haven/data/user_manager.dart';
 import 'package:pet_haven/screens/login.dart';
+import 'package:pet_haven/screens/profile_settings.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/profile_titles.dart';
 import 'package:pet_haven/screens/about_app.dart';
@@ -14,6 +16,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final user = context.watch<UserManager>();
 
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Profile'),
@@ -32,17 +35,14 @@ class Profile extends StatelessWidget {
 
             // Name + email
             Text(
-              'Saviskar Thiruchelvam',
+              user.fullName,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: scheme.onSurface,
               ),
             ),
-            Text(
-              'saviskar123@gmail.com',
-              style: TextStyle(color: scheme.onSurfaceVariant),
-            ),
+            Text(user.email, style: TextStyle(color: scheme.onSurfaceVariant)),
 
             const SizedBox(height: 24),
 
@@ -57,8 +57,13 @@ class Profile extends StatelessWidget {
                 children: [
                   ProfileTile(
                     icon: Icons.settings_outlined,
-                    title: 'Settings',
-                    onTap: () {},
+                    title: 'Profile Settings',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ProfileSettings()),
+                      );
+                    },
                     scheme: scheme,
                   ),
                   ProfileTile(

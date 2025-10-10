@@ -8,6 +8,7 @@ class ProfileTile extends StatelessWidget {
   final ColorScheme scheme;
 
   const ProfileTile({
+    super.key,
     required this.icon,
     required this.title,
     required this.onTap,
