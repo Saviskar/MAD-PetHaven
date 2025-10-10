@@ -6,12 +6,6 @@ import 'package:pet_haven/theme/color.dart';
 class CreateAccount extends StatelessWidget {
   const CreateAccount({super.key});
 
-  // to the below then only "automaticallyImplyLeading: true," will work
-  //   Navigator.push(
-  //   context,
-  //   MaterialPageRoute(builder: (context) => const CreateAccount()),
-  // );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
