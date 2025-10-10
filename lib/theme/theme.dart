@@ -52,10 +52,10 @@ ThemeData buildDarkTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    scaffoldBackgroundColor: scheme.surface,
+    scaffoldBackgroundColor: AppColors.darkMode,
     appBarTheme: AppBarTheme(
-      backgroundColor: scheme.surface,
-      foregroundColor: scheme.onSurface,
+      backgroundColor: AppColors.darkMode,
+      foregroundColor: Colors.white,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
     ),
