@@ -40,7 +40,7 @@ class CustomCard extends StatelessWidget {
 
           // 👇 Gentle border only in dark mode for separation
           border: isDarkMode
-              ? Border.all(color: Colors.grey.withOpacity(0.3))
+              ? Border.all(color: Colors.grey.withValues(alpha: 0.3))
               : null,
 
           // 👇 Light shadow only in light mode
@@ -48,7 +48,7 @@ class CustomCard extends StatelessWidget {
               ? []
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 6,
                     offset: const Offset(0, 3),
                   ),
