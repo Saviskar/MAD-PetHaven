@@ -19,7 +19,13 @@ import 'package:pet_haven/screens/shop.dart';
 /// - Provides swipe navigation between tabs with bounce physics.
 class MainScreen extends StatefulWidget {
   /// Creates a [MainScreen] widget.
-  const MainScreen({super.key});
+  ///
+  /// [initialIndex] allows the screen to open directly to a specific tab,
+  /// such as Shop or Cart. Defaults to 0 (Home).
+  const MainScreen({super.key, this.initialIndex = 0});
+
+  /// The index of the tab to open initially. (0 = Home, 1 = Shop, 2 = Cart, 3 = Profile)
+  final int initialIndex;
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -31,10 +37,10 @@ class MainScreen extends StatefulWidget {
 /// the currently selected tab index.
 class _MainScreenState extends State<MainScreen> {
   /// Controller for managing page navigation.
-  final PageController _controller = PageController();
+  late final PageController _controller;
 
   /// The index of the currently selected bottom navigation tab.
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
   /// The list of pages corresponding to each bottom navigation item.
   ///
@@ -46,6 +52,16 @@ class _MainScreenState extends State<MainScreen> {
     Cart(key: PageStorageKey('cart')),
     Profile(key: PageStorageKey('profile')),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// Sets the starting tab based on [widget.initialIndex].
+    /// This allows navigation directly to a specific tab, such as Shop.
+    _selectedIndex = widget.initialIndex;
+    _controller = PageController(initialPage: _selectedIndex);
+  }
 
   @override
   void dispose() {
