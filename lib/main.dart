@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/pages/main_screen.dart';
+import 'package:pet_haven/app/auth_gate.dart';
+import 'package:pet_haven/data/auth_manager.dart';
 import 'package:pet_haven/theme/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => AuthManager(), child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
-      home: MainScreen(),
+      home: const AuthGate(),
     );
   }
 }
