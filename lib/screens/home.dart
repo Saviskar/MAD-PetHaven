@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
                     onTap: () => NavigationHelper.goToShop(context),
                     child: OurCategory(
                       title: 'Accessories',
-                      imagePath: 'assets/images/dog_food.png',
+                      imagePath: 'assets/images/dog_leash.jpg',
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
                     onTap: () => NavigationHelper.goToShop(context),
                     child: OurCategory(
                       title: 'Grooming',
-                      imagePath: 'assets/images/dog_food.png',
+                      imagePath: 'assets/images/dog_shampoo.jpg',
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                     onTap: () => NavigationHelper.goToShop(context),
                     child: OurCategory(
                       title: 'Toys',
-                      imagePath: 'assets/images/dog_food.png',
+                      imagePath: 'assets/images/cat_scratching_post.jpg',
                     ),
                   ),
                 ],
@@ -88,19 +88,19 @@ class Home extends StatelessWidget {
                 children: [
                   CustomCard(
                     title: 'Food',
-                    imagePath: 'assets/images/dog_food.png',
+                    imagePath: 'assets/images/parrot_food_mix.jpg',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),
                   CustomCard(
                     title: 'Grooming',
-                    imagePath: 'assets/images/dog_food.png',
+                    imagePath: 'assets/images/dog_shampoo.jpg',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),
                   CustomCard(
                     title: 'Toys',
-                    imagePath: 'assets/images/dog_food.png',
+                    imagePath: 'assets/images/cat_toy_mouse.png',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),
