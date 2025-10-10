@@ -16,7 +16,6 @@ class Profile extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      // backgroundColor: scheme.surface,
       appBar: CustomAppBar(appBarTitle: 'Profile'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
