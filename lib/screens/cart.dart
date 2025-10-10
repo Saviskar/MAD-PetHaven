@@ -273,7 +273,7 @@ class _CartState extends State<Cart> {
               backgroundColor: Colors.red.shade600,
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Checkout is a demo action')),
+                  const SnackBar(content: Text('Checkout button clicked')),
                 );
               },
             ),

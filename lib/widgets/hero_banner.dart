@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/screens/main_screen.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class HeroBanner extends StatelessWidget {
@@ -7,7 +8,7 @@ class HeroBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16), // 👈 rounded corners
+      borderRadius: BorderRadius.circular(16),
       child: SizedBox(
         width: double.infinity,
         height: 250,
@@ -31,7 +32,14 @@ class HeroBanner extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (_) => MainScreen(initialIndex: 1),
+                          ),
+                          (route) => false,
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

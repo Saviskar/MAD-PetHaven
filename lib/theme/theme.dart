@@ -52,10 +52,10 @@ ThemeData buildDarkTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    scaffoldBackgroundColor: scheme.surface,
+    scaffoldBackgroundColor: AppColors.darkMode,
     appBarTheme: AppBarTheme(
-      backgroundColor: scheme.surface,
-      foregroundColor: scheme.onSurface,
+      backgroundColor: AppColors.darkMode,
+      foregroundColor: Colors.white,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
     ),
@@ -74,7 +74,7 @@ ThemeData buildDarkTheme() {
     ),
 
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 19, 19, 19),
       selectedIconTheme: IconThemeData(size: 24, color: AppColors.primary),
       unselectedIconTheme: IconThemeData(size: 24, color: Colors.grey),
       selectedLabelStyle: TextStyle(

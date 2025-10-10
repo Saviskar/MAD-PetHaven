@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/helper/navigation_helper.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/hero_banner.dart';
@@ -33,24 +34,36 @@ class Home extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  OurCategory(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                  GestureDetector(
+                    onTap: () => NavigationHelper.goToShop(context),
+                    child: OurCategory(
+                      title: 'Accessories',
+                      imagePath: 'assets/images/dog_leash.jpg',
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  OurCategory(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                  GestureDetector(
+                    onTap: () => NavigationHelper.goToShop(context),
+                    child: OurCategory(
+                      title: 'Food',
+                      imagePath: 'assets/images/dog_food.png',
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  OurCategory(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                  GestureDetector(
+                    onTap: () => NavigationHelper.goToShop(context),
+                    child: OurCategory(
+                      title: 'Grooming',
+                      imagePath: 'assets/images/dog_shampoo.jpg',
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  OurCategory(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                  GestureDetector(
+                    onTap: () => NavigationHelper.goToShop(context),
+                    child: OurCategory(
+                      title: 'Toys',
+                      imagePath: 'assets/images/cat_scratching_post.jpg',
+                    ),
                   ),
                 ],
               ),
@@ -74,32 +87,20 @@ class Home extends StatelessWidget {
               child: Row(
                 children: [
                   CustomCard(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                    title: 'Food',
+                    imagePath: 'assets/images/parrot_food_mix.jpg',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),
                   CustomCard(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                    title: 'Grooming',
+                    imagePath: 'assets/images/dog_shampoo.jpg',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),
                   CustomCard(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                  CustomCard(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                  CustomCard(
-                    title: 'Dog Food',
-                    imagePath: 'assets/images/dog_food.png',
+                    title: 'Toys',
+                    imagePath: 'assets/images/cat_toy_mouse.png',
                     width: 140,
                     margin: const EdgeInsets.only(right: 15),
                   ),

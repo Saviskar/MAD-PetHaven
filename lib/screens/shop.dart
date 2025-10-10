@@ -39,6 +39,14 @@ class _ShopState extends State<Shop> {
   Widget build(BuildContext context) {
     final products = _filteredProducts();
 
+    final categories = [
+      ('All Products', Icons.apps),
+      ('Accessories', Icons.shopping_bag),
+      ('Food', Icons.restaurant),
+      ('Grooming', Icons.cut),
+      ('Toys', Icons.sports_esports),
+    ];
+
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
       body: LayoutBuilder(
@@ -77,15 +85,16 @@ class _ShopState extends State<Shop> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _crumb('All Products', Icons.apps),
-                      const SizedBox(width: 10),
-                      _crumb('Accessories', Icons.shopping_bag),
-                      const SizedBox(width: 10),
-                      _crumb('Food', Icons.restaurant),
-                      const SizedBox(width: 10),
-                      _crumb('Grooming', Icons.cut),
-                      const SizedBox(width: 10),
-                      _crumb('Toys', Icons.sports_esports),
+                      for (final (title, icon) in categories) ...[
+                        BreadCrumb(
+                          title: title,
+                          icon: icon,
+                          selected: _selectedCategory == title,
+                          onTap: () =>
+                              setState(() => _selectedCategory = title),
+                        ),
+                        const SizedBox(width: 10),
+                      ],
                     ],
                   ),
                 ),
@@ -137,15 +146,6 @@ class _ShopState extends State<Shop> {
           );
         },
       ),
-    );
-  }
-
-  Widget _crumb(String title, IconData icon) {
-    return BreadCrumb(
-      title: title,
-      icon: icon,
-      selected: _selectedCategory == title,
-      onTap: () => setState(() => _selectedCategory = title),
     );
   }
 }
