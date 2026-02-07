@@ -1,10 +1,10 @@
-import 'product.dart';
+import 'package:pet_haven/models/product.dart';
 
-class ProductRepository {
+class ProductService {
   // Singleton Pattern
-  ProductRepository._internal();
-  static final ProductRepository _instance = ProductRepository._internal();
-  factory ProductRepository() => _instance;
+  ProductService._internal();
+  static final ProductService _instance = ProductService._internal();
+  factory ProductService() => _instance;
 
   final List<Product> _products = const [
     Product(

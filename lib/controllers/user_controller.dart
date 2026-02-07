@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class UserManager extends ChangeNotifier {
-  static final UserManager _instance = UserManager._internal();
-  factory UserManager() => _instance;
-  UserManager._internal();
+class UserController extends ChangeNotifier {
+  static final UserController _instance = UserController._internal();
+  factory UserController() => _instance;
+  UserController._internal();
 
   String _fullName = "Saviskar Thiruchelvam";
   String _email = "saviskar123@gmail.com";

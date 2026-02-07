@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:pet_haven/data/cart_manager.dart';
-import 'package:pet_haven/data/product_repository.dart';
+import 'package:pet_haven/controllers/cart_controller.dart';
+import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final product = ProductRepository().byId(widget.productId);
+    final product = ProductService().byId(widget.productId);
 
     if (product == null) {
       return Scaffold(
@@ -160,7 +160,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
           ElevatedButton(
             onPressed: () async {
-              await CartManager().add(product.id, quantity: quantity);
+              await CartController().add(product.id, quantity: quantity);
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Added $quantity x ${product.name}')),

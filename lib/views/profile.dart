@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/data/auth_manager.dart';
-import 'package:pet_haven/data/user_manager.dart';
-import 'package:pet_haven/screens/login.dart';
-import 'package:pet_haven/screens/profile_settings.dart';
+import 'package:pet_haven/controllers/auth_controller.dart';
+import 'package:pet_haven/controllers/user_controller.dart';
+import 'package:pet_haven/views/login.dart';
+import 'package:pet_haven/views/profile_settings.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/profile_titles.dart';
-import 'package:pet_haven/screens/about_app.dart';
+import 'package:pet_haven/views/about_app.dart';
 import 'package:pet_haven/theme/color.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final user = context.watch<UserManager>();
+    final user = context.watch<UserController>();
 
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Profile'),
@@ -88,7 +88,7 @@ class Profile extends StatelessWidget {
               placeholder: 'Logout',
               backgroundColor: AppColors.primary,
               onPressed: () async {
-                await context.read<AuthManager>().logout();
+                await context.read<AuthController>().logout();
                 if (context.mounted) {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (_) => const Login()),

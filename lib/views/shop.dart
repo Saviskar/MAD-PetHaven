@@ -3,9 +3,9 @@ import 'package:pet_haven/widgets/bread_crumb.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
-import 'package:pet_haven/data/product.dart';
-import 'package:pet_haven/data/product_repository.dart';
-import 'package:pet_haven/screens/product_detail_page.dart';
+import 'package:pet_haven/models/product.dart';
+import 'package:pet_haven/services/product_service.dart';
+import 'package:pet_haven/views/product_detail_page.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -15,7 +15,7 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
-  final _repo = ProductRepository();
+  final _repo = ProductService();
   String _selectedCategory = 'All Products';
   String _search = '';
 

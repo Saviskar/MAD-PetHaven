@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/app/auth_gate.dart';
-import 'package:pet_haven/data/auth_manager.dart';
-import 'package:pet_haven/data/user_manager.dart';
+import 'package:pet_haven/controllers/auth_controller.dart';
+import 'package:pet_haven/controllers/user_controller.dart';
 import 'package:pet_haven/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +9,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthManager()),
-        ChangeNotifierProvider(create: (_) => UserManager()),
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => UserController()),
       ],
       child: const MyApp(),
     ),

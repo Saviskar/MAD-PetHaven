@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:pet_haven/data/cart_item.dart';
+import 'package:pet_haven/models/cart_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CartManager {
-  static final CartManager _instance = CartManager._();
-  factory CartManager() => _instance;
-  CartManager._();
+class CartController {
+  static final CartController _instance = CartController._();
+  factory CartController() => _instance;
+  CartController._();
 
   final List<CartItem> _items = [];
   static const _key = 'cart';

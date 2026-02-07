@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/data/user_manager.dart';
+import 'package:pet_haven/controllers/user_controller.dart';
 import 'package:pet_haven/theme/color.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
@@ -26,7 +26,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   @override
   void initState() {
     super.initState();
-    final user = UserManager();
+    final user = UserController();
     nameCtrl = TextEditingController(text: user.fullName);
     emailCtrl = TextEditingController(text: user.email);
     phoneCtrl = TextEditingController(text: user.mobile);
@@ -48,7 +48,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   void _saveChanges(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
 
-    context.read<UserManager>().updateProfile(
+    context.read<UserController>().updateProfile(
       fullName: nameCtrl.text.trim(),
       email: emailCtrl.text.trim(),
       mobile: phoneCtrl.text.trim(),

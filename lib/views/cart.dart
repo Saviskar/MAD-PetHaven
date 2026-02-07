@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/data/cart_manager.dart';
-import 'package:pet_haven/data/product_repository.dart';
+import 'package:pet_haven/controllers/cart_controller.dart';
+import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 
 class Cart extends StatefulWidget {
@@ -11,8 +11,8 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  final cart = CartManager();
-  final products = ProductRepository();
+  final cart = CartController();
+  final products = ProductService();
   static const double _shippingFlat = 20.00;
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthManager extends ChangeNotifier {
+class AuthController extends ChangeNotifier {
   static const _kLoggedIn = 'logged_in';
 
   bool _initialized = false;
@@ -10,7 +10,7 @@ class AuthManager extends ChangeNotifier {
   bool get isInitialized => _initialized;
   bool get isLoggedIn => _loggedIn;
 
-  AuthManager() {
+  AuthController() {
     _bootstrap();
   }
 

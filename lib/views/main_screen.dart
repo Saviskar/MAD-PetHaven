@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/widgets/app_bottom_navigation.dart';
-import 'package:pet_haven/screens/cart.dart';
-import 'package:pet_haven/screens/home.dart';
-import 'package:pet_haven/screens/profile.dart';
-import 'package:pet_haven/screens/shop.dart';
+import 'package:pet_haven/views/cart.dart';
+import 'package:pet_haven/views/home.dart';
+import 'package:pet_haven/views/profile.dart';
+import 'package:pet_haven/views/shop.dart';
 
 /// The main container widget for the Pet Haven app.
 ///
