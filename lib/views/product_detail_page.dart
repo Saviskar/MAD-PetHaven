@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pet_haven/controllers/cart_controller.dart';
+import 'package:pet_haven/controllers/wishlist_controller.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/theme/color.dart';
@@ -247,7 +248,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: Text(product.name)),
+          appBar: AppBar(
+            title: Text(product.name),
+            actions: [
+              ListenableBuilder(
+                listenable: WishlistController(),
+                builder: (context, _) {
+                  final isFav = WishlistController().isFavorite(product.id);
+                  return IconButton(
+                    icon: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: isFav ? Colors.red : null,
+                    ),
+                    onPressed: () {
+                      WishlistController().toggleWishlist(product);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: LayoutBuilder(

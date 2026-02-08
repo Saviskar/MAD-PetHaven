@@ -8,6 +8,8 @@ class CustomCard extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final double? width;
   final double? discount;
+  final bool isFavorite;
+  final VoidCallback? onFavorite;
 
   const CustomCard({
     super.key,
@@ -18,6 +20,8 @@ class CustomCard extends StatelessWidget {
     this.margin,
     this.width,
     this.discount,
+    this.isFavorite = false,
+    this.onFavorite,
   });
 
   @override
@@ -110,6 +114,23 @@ class CustomCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: IconButton(
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.grey,
+                    ),
+                    onPressed: onFavorite,
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(4),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.white.withValues(alpha: 0.7),
+                      shape: const CircleBorder(),
+                    ),
+                  ),
+                ),
               ],
             ),
 

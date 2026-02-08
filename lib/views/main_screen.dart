@@ -4,6 +4,7 @@ import 'package:pet_haven/views/cart.dart';
 import 'package:pet_haven/views/home.dart';
 import 'package:pet_haven/views/profile.dart';
 import 'package:pet_haven/views/shop.dart';
+import 'package:pet_haven/views/wishlist_page.dart';
 
 /// The main container widget for the Pet Haven app.
 ///
@@ -49,6 +50,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = const [
     Home(key: PageStorageKey('home')),
     Shop(key: PageStorageKey('shop')),
+    WishlistPage(key: PageStorageKey('wishlist')),
     Cart(key: PageStorageKey('cart')),
     Profile(key: PageStorageKey('profile')),
   ];
