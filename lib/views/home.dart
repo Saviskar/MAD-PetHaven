@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_haven/controllers/product_controller.dart';
 import 'package:pet_haven/helper/navigation_helper.dart';
+import 'package:pet_haven/views/product_detail_page.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/hero_banner.dart';
@@ -126,11 +127,17 @@ class Home extends StatelessWidget {
                         title: product.name,
                         imagePath: product.imageUrl,
                         price: product.price,
+                        discount: product.discount,
                         width: 140,
                         margin: const EdgeInsets.only(right: 15),
                         onTap: () {
-                          // TODO: Navigate to product detail
-                          // NavigationHelper.goToProductDetail(context, product);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  ProductDetailPage(productId: product.id),
+                            ),
+                          );
                         },
                       );
                     }).toList(),
