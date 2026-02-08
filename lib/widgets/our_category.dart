@@ -71,7 +71,12 @@ class _OurCategoryState extends State<OurCategory> {
             duration: const Duration(milliseconds: 150),
             child: CircleAvatar(
               radius: 40,
-              backgroundImage: AssetImage(widget.imagePath),
+              backgroundImage: widget.imagePath.startsWith('http')
+                  ? NetworkImage(widget.imagePath)
+                  : AssetImage(widget.imagePath) as ImageProvider,
+              onBackgroundImageError: (_, __) {
+                // Determine what to do on error, maybe nothing or log
+              },
             ),
           ),
         ),
