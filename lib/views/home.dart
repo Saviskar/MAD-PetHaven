@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pet_haven/controllers/product_controller.dart';
 import 'package:pet_haven/helper/navigation_helper.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
@@ -8,6 +10,27 @@ import 'package:pet_haven/widgets/our_category.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
+
+  static const Map<String, String> _categoryImages = {
+    'Dog Food': 'assets/images/dog_food.png',
+    'Cat Food': 'assets/images/dog_kibble.jpg',
+    'Dog Toys': 'assets/images/cat_scratching_post.jpg',
+    'Cat Toys': 'assets/images/cat_toy_mouse.png',
+    'Pet Accessories': 'assets/images/dog_leash.jpg',
+    'Pet Grooming': 'assets/images/dog_shampoo.jpg',
+    'Pet Health': 'assets/images/cat_litter.jpg',
+    'Pet Beds and Furnitures': 'assets/images/dog_bed.jpg',
+    // Aliases in case of slight naming variations
+    'Pet Beds': 'assets/images/dog_bed.jpg',
+    'Accessories': 'assets/images/dog_leash.jpg',
+  };
+
+  String _getCategoryImage(String name, String? ApiUrl) {
+    if (_categoryImages.containsKey(name)) return _categoryImages[name]!;
+    final generic = name.replaceAll('Pet ', '');
+    if (_categoryImages.containsKey(generic)) return _categoryImages[generic]!;
+    return ApiUrl ?? 'assets/images/dog_food.png';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,44 +52,46 @@ class Home extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            // scrolls horizontally
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => NavigationHelper.goToShop(context),
-                    child: OurCategory(
-                      title: 'Accessories',
-                      imagePath: 'assets/images/dog_leash.jpg',
+            Consumer<ProductController>(
+              builder: (context, controller, child) {
+                if (controller.isCategoriesLoading &&
+                    controller.categories.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: CircularProgressIndicator(),
                     ),
+                  );
+                }
+
+                if (controller.categories.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Text('No categories found'),
+                  );
+                }
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: controller.categories.map((category) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: GestureDetector(
+                          onTap: () => NavigationHelper.goToShop(context),
+                          child: OurCategory(
+                            title: category.name,
+                            imagePath: _getCategoryImage(
+                              category.name,
+                              category.imageUrl,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () => NavigationHelper.goToShop(context),
-                    child: OurCategory(
-                      title: 'Food',
-                      imagePath: 'assets/images/dog_food.png',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () => NavigationHelper.goToShop(context),
-                    child: OurCategory(
-                      title: 'Grooming',
-                      imagePath: 'assets/images/dog_shampoo.jpg',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () => NavigationHelper.goToShop(context),
-                    child: OurCategory(
-                      title: 'Toys',
-                      imagePath: 'assets/images/cat_scratching_post.jpg',
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
 
             SizedBox(height: 20),
@@ -82,30 +107,36 @@ class Home extends StatelessWidget {
 
             SizedBox(height: 12),
 
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  CustomCard(
-                    title: 'Food',
-                    imagePath: 'assets/images/parrot_food_mix.jpg',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
+            Consumer<ProductController>(
+              builder: (context, controller, child) {
+                if (controller.isPromotedLoading &&
+                    controller.promotedProducts.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.promotedProducts.isEmpty) {
+                  return const SizedBox.shrink(); // Hide if no promotions
+                }
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: controller.promotedProducts.map((product) {
+                      return CustomCard(
+                        title: product.name,
+                        imagePath: product.imageUrl,
+                        price: product.price,
+                        width: 140,
+                        margin: const EdgeInsets.only(right: 15),
+                        onTap: () {
+                          // TODO: Navigate to product detail
+                          // NavigationHelper.goToProductDetail(context, product);
+                        },
+                      );
+                    }).toList(),
                   ),
-                  CustomCard(
-                    title: 'Grooming',
-                    imagePath: 'assets/images/dog_shampoo.jpg',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                  CustomCard(
-                    title: 'Toys',
-                    imagePath: 'assets/images/cat_toy_mouse.png',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
