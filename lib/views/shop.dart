@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/controllers/product_controller.dart';
+import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/widgets/bread_crumb.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
-import 'package:pet_haven/models/product.dart';
-import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/views/product_detail_page.dart';
+import 'package:provider/provider.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -15,15 +16,40 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
-  final _repo = ProductService();
   String _selectedCategory = 'All Products';
   String _search = '';
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch products when entering the shop if not already loaded or stale
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProductController>().refresh();
+    });
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final controller = context.read<ProductController>();
+    if (controller.isFetchingMore || controller.isLoading) return;
+
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      controller.fetchNextPage();
+    }
+  }
 
   bool _matchesCategory(Product p) =>
       _selectedCategory == 'All Products' || p.category == _selectedCategory;
 
-  List<Product> _filteredProducts() {
-    final all = _repo.all();
+  List<Product> _filteredProducts(List<Product> all) {
     final q = _search.trim().toLowerCase();
     return all.where((p) {
       final byCat = _matchesCategory(p);
@@ -37,11 +63,12 @@ class _ShopState extends State<Shop> {
 
   @override
   Widget build(BuildContext context) {
-    final products = _filteredProducts();
-
     final categories = [
       ('All Products', Icons.apps),
-      ('Accessories', Icons.shopping_bag),
+      (
+        'Accessories',
+        Icons.shopping_bag,
+      ), // Note: API returns "Pet Accessories"
       ('Food', Icons.restaurant),
       ('Grooming', Icons.cut),
       ('Toys', Icons.sports_esports),
@@ -49,100 +76,135 @@ class _ShopState extends State<Shop> {
 
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-
-          // Responsive column count by width
-          int cols;
-          if (width >= 1200) {
-            cols = 5;
-          } else if (width >= 900) {
-            cols = 4;
-          } else if (width >= 600) {
-            cols = 3;
-          } else {
-            cols = 2;
+      body: Consumer<ProductController>(
+        builder: (context, controller, child) {
+          if (controller.isLoading && controller.products.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
           }
 
-          final spacing = width >= 900 ? 16.0 : 12.0;
+          if (controller.error != null && controller.products.isEmpty) {
+            return Center(child: Text('Error: ${controller.error}'));
+          }
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Search
-                InputField(
-                  hintText: 'Search for pet supplies',
-                  onChanged: (val) => setState(() => _search = val),
-                ),
+          final products = _filteredProducts(controller.products);
 
-                const SizedBox(height: 10),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
 
-                // Categories Row (functional now)
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (final (title, icon) in categories) ...[
-                        BreadCrumb(
-                          title: title,
-                          icon: icon,
-                          selected: _selectedCategory == title,
-                          onTap: () =>
-                              setState(() => _selectedCategory = title),
+              // Responsive column count by width
+              int cols;
+              if (width >= 1200) {
+                cols = 5;
+              } else if (width >= 900) {
+                cols = 4;
+              } else if (width >= 600) {
+                cols = 3;
+              } else {
+                cols = 2;
+              }
+
+              final spacing = width >= 900 ? 16.0 : 12.0;
+
+              return CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.all(20.0),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate([
+                        // Search
+                        InputField(
+                          hintText: 'Search for pet supplies',
+                          onChanged: (val) => setState(() => _search = val),
                         ),
-                        const SizedBox(width: 10),
-                      ],
-                    ],
-                  ),
-                ),
 
-                const SizedBox(height: 20),
-                Text(
-                  _selectedCategory,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(height: 12),
+                        const SizedBox(height: 10),
 
-                // Responsive Products Grid
-                GridView.builder(
-                  itemCount: products.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: cols,
-                    mainAxisSpacing: spacing,
-                    crossAxisSpacing: spacing,
-                    childAspectRatio: 0.82,
-                  ),
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    return CustomCard(
-                      title: product.name,
-                      imagePath: product.imageAsset,
-                      price: product.price,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                ProductDetailPage(productId: product.id),
+                        // Categories Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final (title, icon) in categories) ...[
+                                BreadCrumb(
+                                  title: title,
+                                  icon: icon,
+                                  selected: _selectedCategory == title,
+                                  onTap: () =>
+                                      setState(() => _selectedCategory = title),
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            ],
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        ),
 
-                const SizedBox(height: 16),
-              ],
-            ),
+                        const SizedBox(height: 20),
+                        Text(
+                          _selectedCategory,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ]),
+                    ),
+                  ),
+
+                  // Responsive Products Grid
+                  products.isEmpty
+                      ? const SliverToBoxAdapter(
+                          child: Center(child: Text("No products found")),
+                        )
+                      : SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: cols,
+                                  mainAxisSpacing: spacing,
+                                  crossAxisSpacing: spacing,
+                                  childAspectRatio: 0.82,
+                                ),
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final product = products[index];
+                              return CustomCard(
+                                title: product.name,
+                                imagePath: product.imageUrl,
+                                price: product.price,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ProductDetailPage(
+                                        productId: product.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }, childCount: products.length),
+                          ),
+                        ),
+
+                  // Loading Indicator at bottom
+                  if (controller.isFetchingMore)
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    )
+                  else
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                ],
+              );
+            },
           );
         },
       ),

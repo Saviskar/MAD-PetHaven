@@ -5,10 +5,10 @@ class ApiService {
   final Dio _dio = Dio();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  static const String _baseUrl = 'https://d22enw4x2xjrbl.cloudfront.net';
+  static const String baseUrl = 'http://47.128.73.78';
 
   ApiService() {
-    _dio.options.baseUrl = _baseUrl;
+    _dio.options.baseUrl = baseUrl;
     _dio.options.headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

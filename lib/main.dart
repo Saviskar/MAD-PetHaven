@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_haven/app/auth_gate.dart';
 import 'package:pet_haven/controllers/auth_controller.dart';
 import 'package:pet_haven/controllers/user_controller.dart';
+import 'package:pet_haven/controllers/product_controller.dart';
 import 'package:pet_haven/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthController()),
         ChangeNotifierProvider(create: (_) => UserController()),
+        ChangeNotifierProvider(create: (_) => ProductController()),
       ],
       child: const MyApp(),
     ),
