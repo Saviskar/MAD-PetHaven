@@ -1,13 +1,13 @@
 // lib/pages/login.dart
 import 'package:flutter/material.dart';
-import 'package:pet_haven/screens/create_account.dart';
-import 'package:pet_haven/screens/main_screen.dart';
+import 'package:pet_haven/views/create_account.dart';
+import 'package:pet_haven/views/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 import 'package:pet_haven/theme/color.dart';
-import 'package:pet_haven/data/auth_manager.dart';
+import 'package:pet_haven/controllers/auth_controller.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _submitting = true);
 
-    final ok = await context.read<AuthManager>().login(
+    final ok = await context.read<AuthController>().login(
       email: _email.text.trim(),
       password: _password.text,
     );
@@ -42,6 +42,12 @@ class _LoginState extends State<Login> {
     setState(() => _submitting = false);
 
     if (ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login successful'),
+          backgroundColor: Colors.green,
+        ),
+      );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const MainScreen()),
         (route) => false,

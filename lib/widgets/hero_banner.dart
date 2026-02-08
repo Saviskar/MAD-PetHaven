@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/screens/main_screen.dart';
+import 'package:pet_haven/views/main_screen.dart';
 import 'package:pet_haven/theme/color.dart';
 
 class HeroBanner extends StatelessWidget {

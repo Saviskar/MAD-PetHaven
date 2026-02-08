@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pet_haven/data/cart_manager.dart';
-import 'package:pet_haven/data/product_repository.dart';
+import 'package:pet_haven/controllers/cart_controller.dart';
+import 'package:pet_haven/models/product.dart';
+import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 
 class Cart extends StatefulWidget {
@@ -11,14 +12,34 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  final cart = CartManager();
-  final products = ProductRepository();
+  final cart = CartController();
+  final productService = ProductService();
   static const double _shippingFlat = 20.00;
+
+  bool _isLoading = true;
+  final Map<int, Product> _productDetails = {};
 
   @override
   void initState() {
     super.initState();
-    cart.load().then((_) => setState(() {}));
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    await cart.load();
+    await _fetchProductDetails();
+    if (mounted) setState(() => _isLoading = false);
+  }
+
+  Future<void> _fetchProductDetails() async {
+    for (final item in cart.items) {
+      if (!_productDetails.containsKey(item.productId)) {
+        final p = await productService.fetchProductById(item.productId);
+        if (p != null) {
+          _productDetails[item.productId] = p;
+        }
+      }
+    }
   }
 
   String _price(double v) => 'Rs. ${v.toStringAsFixed(2)}';
@@ -26,7 +47,7 @@ class _CartState extends State<Cart> {
   double get _subtotal {
     double sum = 0;
     for (final item in cart.items) {
-      final p = products.byId(item.productId);
+      final p = _productDetails[item.productId];
       if (p != null) sum += p.price * item.quantity;
     }
     return sum;
@@ -37,6 +58,13 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Shopping Cart'), centerTitle: true),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final items = cart.items;
     final scheme = Theme.of(context).colorScheme;
 
@@ -58,7 +86,8 @@ class _CartState extends State<Cart> {
           else
             ...List.generate(items.length, (index) {
               final item = items[index];
-              final product = products.byId(item.productId);
+              final product = _productDetails[item.productId];
+
               if (product == null) return const SizedBox.shrink();
 
               return Container(
@@ -80,12 +109,29 @@ class _CartState extends State<Cart> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        product.imageAsset,
-                        width: 64,
-                        height: 64,
-                        fit: BoxFit.cover,
-                      ),
+                      child: product.imageUrl.startsWith('http')
+                          ? Image.network(
+                              product.imageUrl,
+                              width: 64,
+                              height: 64,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                    color: Colors.grey[200],
+                                    width: 64,
+                                    height: 64,
+                                    child: const Icon(
+                                      Icons.broken_image,
+                                      size: 30,
+                                    ),
+                                  ),
+                            )
+                          : Image.asset(
+                              'assets/images/placeholder.png', // Fallback
+                              width: 64,
+                              height: 64,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -191,7 +237,7 @@ class _CartState extends State<Cart> {
 
             const SizedBox(height: 16),
 
-            // Clear Cart (Styled Dialog)
+            // Clear Cart
             WideButton(
               placeholder: 'Clear Cart',
               backgroundColor: Colors.red.shade400,

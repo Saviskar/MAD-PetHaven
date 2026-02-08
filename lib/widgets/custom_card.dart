@@ -65,7 +65,22 @@ class CustomCard extends StatelessWidget {
               ),
               child: AspectRatio(
                 aspectRatio: _getAspectRatio(context),
-                child: Image.asset(imagePath, fit: BoxFit.cover),
+                child: imagePath.startsWith('http')
+                    ? Image.network(
+                        imagePath,
+                        fit: BoxFit.cover,
+                        cacheWidth: 500, // Optimize memory usage
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey.shade300,
+                            child: const Icon(
+                              Icons.broken_image,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      )
+                    : Image.asset(imagePath, fit: BoxFit.cover),
               ),
             ),
 
