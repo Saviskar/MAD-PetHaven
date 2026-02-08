@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_haven/controllers/cart_controller.dart';
 import 'package:pet_haven/controllers/user_controller.dart';
 import 'package:pet_haven/theme/color.dart';
+import 'package:pet_haven/views/main_screen.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
@@ -69,30 +70,116 @@ class _CheckoutState extends State<Checkout> {
       await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Order Placed!'),
-          content: Text(
-            'Your order has been placed successfully!\nIt will be delivered to:\n${addressCtrl.text}, ${cityCtrl.text}\nwithin 3 days.',
-            textAlign: TextAlign.center,
+        builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                final cart = CartController();
-                await cart.clear();
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircleAvatar(
+                  radius: 35,
+                  backgroundColor: AppColors.primary,
+                  child: Icon(Icons.check, size: 40, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Order Placed!',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Your order has been confirmed and will be delivered to:',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '${addressCtrl.text}, ${cityCtrl.text}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(
+                        Icons.local_shipping,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        'Estimated Delivery: 3 Days',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final cart = CartController();
+                      await cart.clear();
 
-                if (ctx.mounted) {
-                  Navigator.of(ctx).pop(); // Close dialog
-                  if (mounted) {
-                    Navigator.of(
-                      context,
-                    ).popUntil((route) => route.isFirst); // Go to Home
-                  }
-                }
-              },
-              child: const Text('OK'),
+                      if (ctx.mounted) {
+                        Navigator.of(ctx).pop(); // Close dialog
+                        if (mounted) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const MainScreen(initialIndex: 1),
+                            ),
+                            (route) => false,
+                          );
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      'Continue Shopping',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     }
