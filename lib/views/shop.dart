@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_haven/controllers/product_controller.dart';
+import 'package:pet_haven/controllers/wishlist_controller.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/widgets/bread_crumb.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
@@ -197,19 +198,33 @@ class _ShopState extends State<Shop> {
                               final discount =
                                   promoted.discount ?? product.discount;
 
-                              return CustomCard(
-                                title: product.name,
-                                imagePath: product.imageUrl,
-                                price: product.price,
-                                discount: discount,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => ProductDetailPage(
-                                        productId: product.id,
-                                      ),
-                                    ),
+                              return ListenableBuilder(
+                                listenable: WishlistController(),
+                                builder: (context, _) {
+                                  final isFav = WishlistController().isFavorite(
+                                    product.id,
+                                  );
+                                  return CustomCard(
+                                    title: product.name,
+                                    imagePath: product.imageUrl,
+                                    price: product.price,
+                                    discount: discount,
+                                    isFavorite: isFav,
+                                    onFavorite: () {
+                                      WishlistController().toggleWishlist(
+                                        product,
+                                      );
+                                    },
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => ProductDetailPage(
+                                            productId: product.id,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
                               );
