@@ -12,19 +12,16 @@ class AuthGate extends StatelessWidget {
     return Consumer<AuthController>(
       builder: (context, auth, _) {
         if (!auth.isInitialized) {
-          return const MaterialApp(
-            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
         if (auth.isLoggedIn) {
-          return auth.isLoggedIn ? const MainScreen() : const Login();
+          return const MainScreen();
         }
 
-        return const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: Login(),
-        );
+        return const Login();
       },
     );
   }

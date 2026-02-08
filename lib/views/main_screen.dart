@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pet_haven/widgets/app_bottom_navigation.dart';
+import 'package:pet_haven/widgets/low_battery_dialog.dart';
+import 'package:pet_haven/widgets/offline_banner.dart';
+import 'package:pet_haven/controllers/battery_controller.dart';
+import 'package:pet_haven/controllers/connectivity_controller.dart';
+import 'package:pet_haven/controllers/product_controller.dart';
 import 'package:pet_haven/views/cart.dart';
 import 'package:pet_haven/views/home.dart';
 import 'package:pet_haven/views/profile.dart';
@@ -18,6 +24,8 @@ import 'package:pet_haven/views/wishlist_page.dart';
 /// - Uses [PageController] for smooth animated page transitions.
 /// - Keeps navigation state in [_selectedIndex].
 /// - Provides swipe navigation between tabs with bounce physics.
+/// - Monitors battery level and shows a fun warning when low.
+/// - Shows offline banner when using cached data.
 class MainScreen extends StatefulWidget {
   /// Creates a [MainScreen] widget.
   ///
@@ -34,14 +42,18 @@ class MainScreen extends StatefulWidget {
 
 /// The state class for [MainScreen].
 ///
-/// Handles navigation logic, page view controller, and updating
-/// the currently selected tab index.
+/// Handles navigation logic, page view controller, updating
+/// the currently selected tab index, battery monitoring, and
+/// connectivity status display.
 class _MainScreenState extends State<MainScreen> {
   /// Controller for managing page navigation.
   late final PageController _controller;
 
   /// The index of the currently selected bottom navigation tab.
   late int _selectedIndex;
+
+  /// Whether the low battery dialog is currently being displayed.
+  bool _isShowingBatteryDialog = false;
 
   /// The list of pages corresponding to each bottom navigation item.
   ///
@@ -63,10 +75,48 @@ class _MainScreenState extends State<MainScreen> {
     /// This allows navigation directly to a specific tab, such as Shop.
     _selectedIndex = widget.initialIndex;
     _controller = PageController(initialPage: _selectedIndex);
+
+    // Initialize monitoring after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeMonitoring();
+    });
+  }
+
+  /// Initialize battery and connectivity monitoring
+  void _initializeMonitoring() {
+    // Battery monitoring
+    final batteryController = context.read<BatteryController>();
+    batteryController.initialize();
+    batteryController.addListener(_checkBatteryAndShowWarning);
+
+    // Connectivity monitoring
+    final connectivityController = context.read<ConnectivityController>();
+    connectivityController.initialize();
+  }
+
+  /// Check battery level and show warning dialog if needed
+  void _checkBatteryAndShowWarning() {
+    if (!mounted) return;
+
+    final batteryController = context.read<BatteryController>();
+
+    if (batteryController.shouldShowWarning && !_isShowingBatteryDialog) {
+      _isShowingBatteryDialog = true;
+
+      LowBatteryDialog.show(context, batteryController.batteryLevel, () {
+        _isShowingBatteryDialog = false;
+        batteryController.markWarningShown();
+      });
+    }
   }
 
   @override
   void dispose() {
+    /// Remove battery listener to prevent memory leaks
+    context.read<BatteryController>().removeListener(
+      _checkBatteryAndShowWarning,
+    );
+
     /// Disposes the [PageController] when the widget is removed
     /// from the widget tree to free up resources.
     _controller.dispose();
@@ -88,24 +138,37 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /// Displays the active page using a [PageView].
-      ///
-      /// Swiping between pages also updates [_selectedIndex] to keep
-      /// the navigation bar and page view in sync.
-      body: PageView(
-        controller: _controller,
-        onPageChanged: (index) => setState(() => _selectedIndex = index),
-        physics: const BouncingScrollPhysics(),
-        children: _pages,
-      ),
+    return Consumer<ProductController>(
+      builder: (context, productController, child) {
+        return Scaffold(
+          /// Shows offline banner when using cached data
+          body: Column(
+            children: [
+              // Offline banner (shows when offline)
+              if (productController.isOffline)
+                OfflineBanner(cacheAge: productController.cacheAge),
 
-      /// The custom bottom navigation bar that reflects the current
-      /// [_selectedIndex] and notifies [_onTap] when a tab is selected.
-      bottomNavigationBar: AppBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onTap,
-      ),
+              // Main content
+              Expanded(
+                child: PageView(
+                  controller: _controller,
+                  onPageChanged: (index) =>
+                      setState(() => _selectedIndex = index),
+                  physics: const BouncingScrollPhysics(),
+                  children: _pages,
+                ),
+              ),
+            ],
+          ),
+
+          /// The custom bottom navigation bar that reflects the current
+          /// [_selectedIndex] and notifies [_onTap] when a tab is selected.
+          bottomNavigationBar: AppBottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onTap,
+          ),
+        );
+      },
     );
   }
 }
