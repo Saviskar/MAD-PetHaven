@@ -9,6 +9,7 @@ ThemeData buildLightTheme() {
 
   return ThemeData(
     useMaterial3: true,
+    colorScheme: scheme,
     scaffoldBackgroundColor: AppColors.background,
     appBarTheme: AppBarTheme(
       backgroundColor: scheme.surface,
