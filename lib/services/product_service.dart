@@ -89,6 +89,33 @@ class ProductService {
       return [];
     }
   }
+
+  Future<List<Product>> fetchPromotedProducts() async {
+    try {
+      final response = await _apiService.dio.get('/api/products/offers');
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        List<dynamic> productList = [];
+
+        if (data is Map<String, dynamic>) {
+          if (data.containsKey('data') && data['data'] is List) {
+            productList = data['data'];
+          } else if (data.containsKey('products') && data['products'] is List) {
+            productList = data['products'];
+          }
+        } else if (data is List) {
+          productList = data;
+        }
+
+        return productList.map((json) => Product.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('ProductService fetchPromotedProducts error: $e');
+      return [];
+    }
+  }
 }
 
 class ProductPaginatedResponse {

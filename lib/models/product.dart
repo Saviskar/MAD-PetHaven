@@ -16,6 +16,9 @@ class Product {
   // Helper to get a valid image provider (network or asset)
   // For now, we'll just expose the URL. UI can handle the NetworkImage logic.
 
+  final bool isPromoted;
+  final double? discount;
+
   const Product({
     required this.id,
     required this.name,
@@ -26,6 +29,8 @@ class Product {
     required this.stock,
     this.colors,
     this.quantities,
+    this.isPromoted = false,
+    this.discount,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -43,6 +48,10 @@ class Product {
       stock: json['stock'] is int
           ? json['stock']
           : int.tryParse(json['stock'].toString()) ?? 0,
+      isPromoted: json['is_promoted'] == 1 || json['is_promoted'] == true,
+      discount: json['discount'] != null
+          ? double.tryParse(json['discount'].toString())
+          : null,
     );
   }
 }

@@ -107,30 +107,36 @@ class Home extends StatelessWidget {
 
             SizedBox(height: 12),
 
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  CustomCard(
-                    title: 'Food',
-                    imagePath: 'assets/images/parrot_food_mix.jpg',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
+            Consumer<ProductController>(
+              builder: (context, controller, child) {
+                if (controller.isPromotedLoading &&
+                    controller.promotedProducts.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.promotedProducts.isEmpty) {
+                  return const SizedBox.shrink(); // Hide if no promotions
+                }
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: controller.promotedProducts.map((product) {
+                      return CustomCard(
+                        title: product.name,
+                        imagePath: product.imageUrl,
+                        price: product.price,
+                        width: 140,
+                        margin: const EdgeInsets.only(right: 15),
+                        onTap: () {
+                          // TODO: Navigate to product detail
+                          // NavigationHelper.goToProductDetail(context, product);
+                        },
+                      );
+                    }).toList(),
                   ),
-                  CustomCard(
-                    title: 'Grooming',
-                    imagePath: 'assets/images/dog_shampoo.jpg',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                  CustomCard(
-                    title: 'Toys',
-                    imagePath: 'assets/images/cat_toy_mouse.png',
-                    width: 140,
-                    margin: const EdgeInsets.only(right: 15),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),

@@ -7,9 +7,13 @@ class ProductController extends ChangeNotifier {
   final ProductService _productService = ProductService();
 
   List<Product> _products = [];
-  List<Category> _categories = []; // New
+  List<Category> _categories = [];
+  List<Product> _promotedProducts = []; // New
+
   bool _isLoading = false;
-  bool _isCategoriesLoading = false; // New
+  bool _isCategoriesLoading = false;
+  bool _isPromotedLoading = false; // New
+
   String? _error;
 
   // Pagination State
@@ -18,9 +22,12 @@ class ProductController extends ChangeNotifier {
   bool _isFetchingMore = false;
 
   List<Product> get products => _products;
-  List<Category> get categories => _categories; // New
+  List<Category> get categories => _categories;
+  List<Product> get promotedProducts => _promotedProducts; // New
+
   bool get isLoading => _isLoading;
-  bool get isCategoriesLoading => _isCategoriesLoading; // New
+  bool get isCategoriesLoading => _isCategoriesLoading;
+  bool get isPromotedLoading => _isPromotedLoading; // New
   bool get isFetchingMore => _isFetchingMore;
   String? get error => _error;
   bool get hasMore => _currentPage < _lastPage;
@@ -44,9 +51,25 @@ class ProductController extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchPromotedProducts() async {
+    _isPromotedLoading = true;
+    notifyListeners();
+    try {
+      debugPrint('Fetching promoted products...');
+      _promotedProducts = await _productService.fetchPromotedProducts();
+      debugPrint('Fetched ${_promotedProducts.length} promoted products');
+    } catch (e) {
+      debugPrint("Error fetching promoted products: $e");
+    } finally {
+      _isPromotedLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> refresh() async {
     // Refresh products and categories
-    fetchCategories(); // Fire and forget or await? Let's not await to parallelize a bit if possible, but setState might conflict. Safe to call.
+    fetchCategories();
+    fetchPromotedProducts(); // New
 
     _isLoading = true;
     _error = null;
