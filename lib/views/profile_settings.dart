@@ -17,51 +17,63 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController nameCtrl;
-  late TextEditingController emailCtrl;
   late TextEditingController phoneCtrl;
-  late TextEditingController addressCtrl;
-  late TextEditingController passCtrl;
-  String gender = "Male";
 
   @override
   void initState() {
     super.initState();
-    final user = UserController();
-    nameCtrl = TextEditingController(text: user.fullName);
-    emailCtrl = TextEditingController(text: user.email);
-    phoneCtrl = TextEditingController(text: user.mobile);
-    addressCtrl = TextEditingController(text: user.address);
-    passCtrl = TextEditingController(text: user.password);
-    gender = user.gender;
+    // Initialize with empty or loading state
+    nameCtrl = TextEditingController();
+    phoneCtrl = TextEditingController();
+
+    // Fetch user data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadUserData();
+    });
+  }
+
+  Future<void> _loadUserData() async {
+    final controller = context.read<UserController>();
+    await controller.fetchUser();
+
+    // Update controllers with fetched data
+    if (mounted) {
+      setState(() {
+        nameCtrl.text = controller.fullName;
+        phoneCtrl.text = controller.mobile;
+      });
+    }
   }
 
   @override
   void dispose() {
     nameCtrl.dispose();
-    emailCtrl.dispose();
     phoneCtrl.dispose();
-    addressCtrl.dispose();
-    passCtrl.dispose();
     super.dispose();
   }
 
-  void _saveChanges(BuildContext context) {
+  void _saveChanges(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
 
-    context.read<UserController>().updateProfile(
-      fullName: nameCtrl.text.trim(),
-      email: emailCtrl.text.trim(),
-      mobile: phoneCtrl.text.trim(),
-      address: addressCtrl.text.trim(),
-      password: passCtrl.text.trim(),
-      gender: gender,
-    );
+    try {
+      await context.read<UserController>().updateProfile(
+        fullName: nameCtrl.text.trim(),
+        mobile: phoneCtrl.text.trim(),
+      );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated successfully')),
-    );
-
-    Navigator.pop(context);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to update profile: $e')));
+      }
+    }
   }
 
   @override
@@ -88,22 +100,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               ),
 
               InputField(
-                controller: emailCtrl,
-                hintText: 'Email Address',
-                keyboardType: TextInputType.emailAddress,
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return 'Please enter your email address';
-                  }
-                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                  if (!emailRegex.hasMatch(val.trim())) {
-                    return 'Enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-
-              InputField(
                 controller: phoneCtrl,
                 hintText: 'Mobile Number',
                 keyboardType: TextInputType.phone,
@@ -119,49 +115,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 },
               ),
 
-              InputField(
-                controller: addressCtrl,
-                hintText: 'Delivery Address',
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return 'Please enter your delivery address';
-                  }
-                  return null;
-                },
-              ),
-
-              InputField(
-                controller: passCtrl,
-                hintText: 'Password',
-                obscureText: true,
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return 'Please enter your password';
-                  } else if (val.trim().length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 10),
-
-              DropdownButtonFormField<String>(
-                initialValue: gender,
-                items: const [
-                  DropdownMenuItem(value: "Male", child: Text('Male')),
-                  DropdownMenuItem(value: "Female", child: Text('Female')),
-                  DropdownMenuItem(value: "Other", child: Text('Other')),
-                ],
-                onChanged: (value) => setState(() => gender = value!),
-                decoration: const InputDecoration(labelText: "Gender"),
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return 'Please select your gender';
-                  }
-                  return null;
-                },
-              ),
+              const SizedBox(height: 25),
 
               const SizedBox(height: 25),
 

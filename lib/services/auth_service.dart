@@ -79,6 +79,34 @@ class AuthService {
     }
   }
 
+  Future<User?> fetchUser() async {
+    try {
+      final response = await _apiService.dio.get('/api/user');
+      if (response.statusCode == 200) {
+        final data = response.data;
+        if (data is Map<String, dynamic> && data.containsKey('data')) {
+          return User.fromJson(data['data']);
+        }
+        return User.fromJson(data);
+      }
+      return null;
+    } catch (e, stack) {
+      print('Error fetching user: $e\n$stack');
+      return null;
+    }
+  }
+
+  Future<void> updateProfile(Map<String, dynamic> data) async {
+    try {
+      await _apiService.dio.put('/api/user', data: data);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(e.response?.data['message'] ?? 'Update failed');
+      }
+      throw Exception('Connection error');
+    }
+  }
+
   Future<void> logout() async {
     try {
       // Optional: call logout endpoint if exists

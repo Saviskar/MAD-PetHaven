@@ -1,38 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:pet_haven/models/user_model.dart';
+import 'package:pet_haven/services/auth_service.dart';
 
 class UserController extends ChangeNotifier {
   static final UserController _instance = UserController._internal();
   factory UserController() => _instance;
   UserController._internal();
 
-  String _fullName = "Saviskar Thiruchelvam";
-  String _email = "saviskar123@gmail.com";
-  String _mobile = "0771234567";
-  String _address = "Colombo, Sri Lanka";
-  String _password = "password123";
-  String _gender = "Male";
+  final AuthService _authService = AuthService();
+  User? _user;
+  bool _isLoading = false;
 
-  String get fullName => _fullName;
-  String get email => _email;
-  String get mobile => _mobile;
-  String get address => _address;
-  String get password => _password;
-  String get gender => _gender;
+  User? get user => _user;
+  bool get isLoading => _isLoading;
 
-  void updateProfile({
+  // Getters for UI compatibility, falling back to empty string if user is null
+  String get fullName => _user?.name ?? '';
+  String get email => _user?.email ?? '';
+  String get mobile => _user?.mobile ?? '';
+  String get addressLine => _user?.addressLine ?? '';
+  String get city => _user?.city ?? '';
+  String get province => _user?.province ?? '';
+  String get password => ''; // Don't expose password
+  String get gender => _user?.gender ?? 'Male';
+
+  Future<void> fetchUser() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _user = await _authService.fetchUser();
+    } catch (e) {
+      debugPrint('Error fetching user: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateProfile({
     String? fullName,
     String? email,
     String? mobile,
-    String? address,
+    String? addressLine,
+    String? city,
+    String? province,
     String? password,
     String? gender,
-  }) {
-    if (fullName != null) _fullName = fullName;
-    if (email != null) _email = email;
-    if (mobile != null) _mobile = mobile;
-    if (address != null) _address = address;
-    if (password != null) _password = password;
-    if (gender != null) _gender = gender;
+  }) async {
+    _isLoading = true;
     notifyListeners();
+    try {
+      final data = {
+        if (fullName != null) 'name': fullName,
+        if (email != null) 'email': email,
+        if (mobile != null) 'mobile': mobile,
+        if (addressLine != null) 'addressline': addressLine,
+        if (city != null) 'city': city,
+        if (province != null) 'province': province,
+        if (password != null && password.isNotEmpty) 'password': password,
+        if (gender != null) 'gender': gender,
+      };
+
+      await _authService.updateProfile(data);
+      await fetchUser(); // Refresh data
+    } catch (e) {
+      debugPrint('Error updating profile: $e');
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
