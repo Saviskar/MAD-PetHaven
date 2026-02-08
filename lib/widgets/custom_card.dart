@@ -135,22 +135,47 @@ class CustomCard extends StatelessWidget {
             ),
 
             // Price
+            // Price
             if (price != null) ...[
               const SizedBox(height: 4),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  'Rs. ${price!.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: isDarkMode
-                        ? Colors
-                              .grey
-                              .shade400 // 👈 softer in dark mode
-                        : Colors.grey.shade700,
-                  ),
-                ),
+                child: (discount != null && discount! > 0)
+                    ? Row(
+                        children: [
+                          Text(
+                            'Rs. ${price!.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.lineThrough,
+                              color: isDarkMode
+                                  ? Colors.grey.shade600
+                                  : Colors.grey.shade500,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Rs. ${(price! * (1 - discount! / 100)).toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: isDarkMode
+                                  ? Colors.redAccent.shade100
+                                  : Colors.red.shade700,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Text(
+                        'Rs. ${price!.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: isDarkMode
+                              ? Colors.grey.shade400
+                              : Colors.grey.shade700,
+                        ),
+                      ),
               ),
             ],
 

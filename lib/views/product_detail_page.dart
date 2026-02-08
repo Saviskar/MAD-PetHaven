@@ -100,14 +100,37 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
               ),
               const SizedBox(height: 6),
-              Text(
-                'Rs. ${product.price.toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
+              if (product.discount != null && product.discount! > 0)
+                Row(
+                  children: [
+                    Text(
+                      'Rs. ${product.price.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 18,
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Rs. ${(product.price * (1 - product.discount! / 100)).toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Text(
+                  'Rs. ${product.price.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
                 ),
-              ),
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 10),
