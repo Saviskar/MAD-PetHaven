@@ -49,9 +49,36 @@ class Product {
           ? json['stock']
           : int.tryParse(json['stock'].toString()) ?? 0,
       isPromoted: json['is_promoted'] == 1 || json['is_promoted'] == true,
-      discount: json['discount'] != null
-          ? double.tryParse(json['discount'].toString())
-          : null,
+      discount: _parseDiscount(json),
     );
+  }
+
+  static double? _parseDiscount(Map<String, dynamic> json) {
+    if (json['discount'] != null) {
+      final s = json['discount'].toString().replaceAll(RegExp(r'[^0-9.]'), '');
+      return double.tryParse(s);
+    }
+    if (json['discount_percentage'] != null) {
+      final s = json['discount_percentage'].toString().replaceAll(
+        RegExp(r'[^0-9.]'),
+        '',
+      );
+      return double.tryParse(s);
+    }
+
+    // Calculate from offer_price if available
+    final price = double.tryParse(json['price'].toString()) ?? 0.0;
+
+    // Check for offer_price or discounted_price
+    dynamic offerVal = json['offer_price'] ?? json['discounted_price'];
+
+    if (offerVal != null) {
+      final offerPrice = double.tryParse(offerVal.toString());
+      if (offerPrice != null && price > 0 && offerPrice < price) {
+        return ((price - offerPrice) / price) * 100;
+      }
+    }
+
+    return null;
   }
 }

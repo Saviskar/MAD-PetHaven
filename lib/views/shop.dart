@@ -186,10 +186,22 @@ class _ShopState extends State<Shop> {
                               index,
                             ) {
                               final product = products[index];
+
+                              // Check if this product is in promoted lists to get discount info
+                              // because the main products API might not return discount fields
+                              final promoted = controller.promotedProducts
+                                  .firstWhere(
+                                    (p) => p.id == product.id,
+                                    orElse: () => product,
+                                  );
+                              final discount =
+                                  promoted.discount ?? product.discount;
+
                               return CustomCard(
                                 title: product.name,
                                 imagePath: product.imageUrl,
                                 price: product.price,
+                                discount: discount,
                                 onTap: () {
                                   Navigator.push(
                                     context,

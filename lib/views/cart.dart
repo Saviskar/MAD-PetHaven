@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_haven/controllers/cart_controller.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/product_service.dart';
+import 'package:pet_haven/views/checkout.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 
 class Cart extends StatefulWidget {
@@ -318,8 +319,11 @@ class _CartState extends State<Cart> {
               placeholder: 'Checkout',
               backgroundColor: Colors.red.shade600,
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Checkout button clicked')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Checkout(totalAmount: _total),
+                  ),
                 );
               },
             ),
