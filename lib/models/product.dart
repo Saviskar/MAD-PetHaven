@@ -45,7 +45,4 @@ class Product {
           : int.tryParse(json['stock'].toString()) ?? 0,
     );
   }
-
-  // Backwards compatibility getter if needed, otherwise UI should use imageUrl
-  String get imageAsset => 'assets/images/placeholder.png'; // Fallback
 }

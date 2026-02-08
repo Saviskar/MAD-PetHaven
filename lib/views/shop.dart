@@ -63,21 +63,34 @@ class _ShopState extends State<Shop> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = [
-      ('All Products', Icons.apps),
-      (
-        'Accessories',
-        Icons.shopping_bag,
-      ), // Note: API returns "Pet Accessories"
-      ('Food', Icons.restaurant),
-      ('Grooming', Icons.cut),
-      ('Toys', Icons.sports_esports),
-    ];
-
     return Scaffold(
       appBar: CustomAppBar(appBarTitle: 'Pet Haven'),
       body: Consumer<ProductController>(
         builder: (context, controller, child) {
+          final categories = [
+            ('All Products', Icons.apps),
+            ...controller.categories.map((c) {
+              final n = c.name.toLowerCase();
+              IconData i = Icons.category;
+              if (n.contains('food')) {
+                i = Icons.restaurant;
+              } else if (n.contains('toy')) {
+                i = Icons.sports_esports;
+              } else if (n.contains('groom')) {
+                i = Icons.cut;
+              } else if (n.contains('access')) {
+                i = Icons.shopping_bag;
+              } else if (n.contains('cloth') || n.contains('rain')) {
+                i = Icons.checkroom;
+              } else if (n.contains('health') || n.contains('med')) {
+                i = Icons.medical_services;
+              } else if (n.contains('bed')) {
+                i = Icons.bed;
+              }
+              return (c.name, i);
+            }),
+          ];
+
           if (controller.isLoading && controller.products.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }

@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' hide Category;
+import 'package:pet_haven/models/category.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/product_service.dart';
 
@@ -6,7 +7,9 @@ class ProductController extends ChangeNotifier {
   final ProductService _productService = ProductService();
 
   List<Product> _products = [];
+  List<Category> _categories = []; // New
   bool _isLoading = false;
+  bool _isCategoriesLoading = false; // New
   String? _error;
 
   // Pagination State
@@ -15,7 +18,9 @@ class ProductController extends ChangeNotifier {
   bool _isFetchingMore = false;
 
   List<Product> get products => _products;
+  List<Category> get categories => _categories; // New
   bool get isLoading => _isLoading;
+  bool get isCategoriesLoading => _isCategoriesLoading; // New
   bool get isFetchingMore => _isFetchingMore;
   String? get error => _error;
   bool get hasMore => _currentPage < _lastPage;
@@ -24,7 +29,25 @@ class ProductController extends ChangeNotifier {
     refresh();
   }
 
+  Future<void> fetchCategories() async {
+    _isCategoriesLoading = true;
+    notifyListeners();
+    try {
+      debugPrint('Fetching categories...');
+      _categories = await _productService.fetchCategories();
+      debugPrint('Fetched ${_categories.length} categories');
+    } catch (e) {
+      debugPrint("Error fetching categories: $e");
+    } finally {
+      _isCategoriesLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> refresh() async {
+    // Refresh products and categories
+    fetchCategories(); // Fire and forget or await? Let's not await to parallelize a bit if possible, but setState might conflict. Safe to call.
+
     _isLoading = true;
     _error = null;
     _currentPage = 1;

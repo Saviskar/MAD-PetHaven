@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' hide Category;
+import 'package:pet_haven/models/category.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/api_service.dart';
 
@@ -41,23 +43,51 @@ class ProductService {
     }
   }
 
-  // Keeping this for reference but commenting out to avoid lints with new Product model
-  /*
-  final List<Product> _products = const [
-    Product(
-      id: 1,
-      name: 'Dog Kibble',
-      // ...
-    ),
-  ];
-  */
+  Future<Product?> fetchProductById(int id) async {
+    try {
+      final response = await _apiService.dio.get('/api/products/$id');
+      if (response.statusCode == 200) {
+        // Depending on API, it might be wrapped in 'data'
+        final data = response.data;
+        if (data is Map<String, dynamic>) {
+          if (data.containsKey('data')) {
+            return Product.fromJson(data['data']);
+          }
+          return Product.fromJson(data);
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 
-  // Temporary fallback if needed, but we want to force API usage
-  List<Product> all() => [];
+  Future<List<Category>> fetchCategories() async {
+    try {
+      final response = await _apiService.dio.get('/api/categories');
+      debugPrint(
+        'Categories API Response: ${response.statusCode} ${response.data}',
+      );
 
-  Product? byId(int id) {
-    // For now returning null or implementation needs to fetch from API or cache
-    return null;
+      if (response.statusCode == 200) {
+        final data = response.data;
+        if (data is List) {
+          return data
+              .map((e) => Category.fromJson(e as Map<String, dynamic>))
+              .toList();
+        } else if (data is Map<String, dynamic> &&
+            data.containsKey('data') &&
+            data['data'] is List) {
+          return (data['data'] as List)
+              .map((e) => Category.fromJson(e as Map<String, dynamic>))
+              .toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      debugPrint('ProductService fetchCategories error: $e');
+      return [];
+    }
   }
 }
 
