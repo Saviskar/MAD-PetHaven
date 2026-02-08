@@ -10,7 +10,12 @@ class User {
   final String? profilePhotoPath;
   final String createdAt;
   final String updatedAt;
-  final String profilePhotoUrl;
+  final String? addressLine;
+  final String? city;
+  final String? province;
+  final String? gender; // Best effort, might not be in backend yet
+  final String
+  profilePhotoUrl; // This was missing in class definition but used in constructor
 
   User({
     required this.id,
@@ -25,6 +30,10 @@ class User {
     required this.createdAt,
     required this.updatedAt,
     required this.profilePhotoUrl,
+    this.addressLine,
+    this.city,
+    this.province,
+    this.gender,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -41,6 +50,10 @@ class User {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       profilePhotoUrl: json['profile_photo_url'],
+      addressLine: json['addressline'],
+      city: json['city'],
+      province: json['province'],
+      gender: json['gender'],
     );
   }
 
@@ -58,6 +71,10 @@ class User {
       'created_at': createdAt,
       'updated_at': updatedAt,
       'profile_photo_url': profilePhotoUrl,
+      'addressline': addressLine,
+      'city': city,
+      'province': province,
+      'gender': gender,
     };
   }
 }
