@@ -55,6 +55,9 @@ class _MainScreenState extends State<MainScreen> {
   /// Whether the low battery dialog is currently being displayed.
   bool _isShowingBatteryDialog = false;
 
+  /// Reference to battery controller (stored to avoid context access in dispose)
+  BatteryController? _batteryController;
+
   /// The list of pages corresponding to each bottom navigation item.
   ///
   /// The first page is the [Home] widget, followed by placeholders
@@ -84,10 +87,10 @@ class _MainScreenState extends State<MainScreen> {
 
   /// Initialize battery and connectivity monitoring
   void _initializeMonitoring() {
-    // Battery monitoring
-    final batteryController = context.read<BatteryController>();
-    batteryController.initialize();
-    batteryController.addListener(_checkBatteryAndShowWarning);
+    // Battery monitoring - store reference for safe disposal
+    _batteryController = context.read<BatteryController>();
+    _batteryController?.initialize();
+    _batteryController?.addListener(_checkBatteryAndShowWarning);
 
     // Connectivity monitoring
     final connectivityController = context.read<ConnectivityController>();
@@ -98,14 +101,13 @@ class _MainScreenState extends State<MainScreen> {
   void _checkBatteryAndShowWarning() {
     if (!mounted) return;
 
-    final batteryController = context.read<BatteryController>();
-
-    if (batteryController.shouldShowWarning && !_isShowingBatteryDialog) {
+    if (_batteryController?.shouldShowWarning == true &&
+        !_isShowingBatteryDialog) {
       _isShowingBatteryDialog = true;
 
-      LowBatteryDialog.show(context, batteryController.batteryLevel, () {
+      LowBatteryDialog.show(context, _batteryController!.batteryLevel, () {
         _isShowingBatteryDialog = false;
-        batteryController.markWarningShown();
+        _batteryController?.markWarningShown();
       });
     }
   }
@@ -113,9 +115,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     /// Remove battery listener to prevent memory leaks
-    context.read<BatteryController>().removeListener(
-      _checkBatteryAndShowWarning,
-    );
+    /// Using stored reference instead of context.read() which is unsafe in dispose
+    _batteryController?.removeListener(_checkBatteryAndShowWarning);
 
     /// Disposes the [PageController] when the widget is removed
     /// from the widget tree to free up resources.
