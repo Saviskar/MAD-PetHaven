@@ -4,6 +4,7 @@ import 'package:pet_haven/controllers/auth_controller.dart';
 import 'package:pet_haven/controllers/user_controller.dart';
 import 'package:pet_haven/controllers/product_controller.dart';
 import 'package:pet_haven/controllers/wishlist_controller.dart';
+import 'package:pet_haven/controllers/battery_controller.dart';
 import 'package:pet_haven/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => UserController()),
         ChangeNotifierProvider(create: (_) => ProductController()),
         ChangeNotifierProvider(create: (_) => WishlistController()),
+        ChangeNotifierProvider(create: (_) => BatteryController()),
       ],
       child: const MyApp(),
     ),

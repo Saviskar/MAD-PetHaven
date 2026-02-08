@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pet_haven/widgets/app_bottom_navigation.dart';
+import 'package:pet_haven/widgets/low_battery_dialog.dart';
+import 'package:pet_haven/controllers/battery_controller.dart';
 import 'package:pet_haven/views/cart.dart';
 import 'package:pet_haven/views/home.dart';
 import 'package:pet_haven/views/profile.dart';
@@ -18,6 +21,7 @@ import 'package:pet_haven/views/wishlist_page.dart';
 /// - Uses [PageController] for smooth animated page transitions.
 /// - Keeps navigation state in [_selectedIndex].
 /// - Provides swipe navigation between tabs with bounce physics.
+/// - Monitors battery level and shows a fun warning when low.
 class MainScreen extends StatefulWidget {
   /// Creates a [MainScreen] widget.
   ///
@@ -34,14 +38,17 @@ class MainScreen extends StatefulWidget {
 
 /// The state class for [MainScreen].
 ///
-/// Handles navigation logic, page view controller, and updating
-/// the currently selected tab index.
+/// Handles navigation logic, page view controller, updating
+/// the currently selected tab index, and battery monitoring.
 class _MainScreenState extends State<MainScreen> {
   /// Controller for managing page navigation.
   late final PageController _controller;
 
   /// The index of the currently selected bottom navigation tab.
   late int _selectedIndex;
+
+  /// Whether the low battery dialog is currently being displayed.
+  bool _isShowingBatteryDialog = false;
 
   /// The list of pages corresponding to each bottom navigation item.
   ///
@@ -63,10 +70,45 @@ class _MainScreenState extends State<MainScreen> {
     /// This allows navigation directly to a specific tab, such as Shop.
     _selectedIndex = widget.initialIndex;
     _controller = PageController(initialPage: _selectedIndex);
+
+    // Initialize battery monitoring after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeBatteryMonitoring();
+    });
+  }
+
+  /// Initialize battery monitoring and set up listener for low battery
+  void _initializeBatteryMonitoring() {
+    final batteryController = context.read<BatteryController>();
+    batteryController.initialize();
+
+    // Listen for battery changes
+    batteryController.addListener(_checkBatteryAndShowWarning);
+  }
+
+  /// Check battery level and show warning dialog if needed
+  void _checkBatteryAndShowWarning() {
+    if (!mounted) return;
+
+    final batteryController = context.read<BatteryController>();
+
+    if (batteryController.shouldShowWarning && !_isShowingBatteryDialog) {
+      _isShowingBatteryDialog = true;
+
+      LowBatteryDialog.show(context, batteryController.batteryLevel, () {
+        _isShowingBatteryDialog = false;
+        batteryController.markWarningShown();
+      });
+    }
   }
 
   @override
   void dispose() {
+    /// Remove battery listener to prevent memory leaks
+    context.read<BatteryController>().removeListener(
+      _checkBatteryAndShowWarning,
+    );
+
     /// Disposes the [PageController] when the widget is removed
     /// from the widget tree to free up resources.
     _controller.dispose();
