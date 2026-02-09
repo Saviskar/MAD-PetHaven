@@ -6,6 +6,7 @@ import 'package:pet_haven/widgets/bread_crumb.dart';
 import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/custom_card.dart';
+import 'package:pet_haven/widgets/section_header.dart';
 import 'package:pet_haven/views/product_detail_page.dart';
 import 'package:provider/provider.dart';
 
@@ -155,13 +156,7 @@ class _ShopState extends State<Shop> {
                         ),
 
                         const SizedBox(height: 20),
-                        Text(
-                          _selectedCategory,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
+                        SectionHeader(title: _selectedCategory),
                         const SizedBox(height: 12),
                       ]),
                     ),

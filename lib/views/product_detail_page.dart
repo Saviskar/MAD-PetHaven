@@ -6,6 +6,7 @@ import 'package:pet_haven/controllers/wishlist_controller.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/theme/color.dart';
+import 'package:pet_haven/widgets/quantity_selector.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int productId;
@@ -191,34 +192,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               const SizedBox(height: 6),
               Text(product.description, style: const TextStyle(height: 1.4)),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      if (quantity > 1) setState(() => quantity--);
-                    },
-                    icon: const Icon(Icons.indeterminate_check_box_outlined),
-                    tooltip: 'Decrease',
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      quantity.toString(),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (quantity < 10) setState(() => quantity++);
-                    },
-                    icon: const Icon(Icons.add_box_outlined),
-                    tooltip: 'Increase',
-                  ),
-                ],
+              QuantitySelector(
+                quantity: quantity,
+                compact: true,
+                max: 10,
+                onDecrement: () {
+                  if (quantity > 1) setState(() => quantity--);
+                },
+                onIncrement: () {
+                  if (quantity < 10) setState(() => quantity++);
+                },
               ),
               const SizedBox(height: 24),
 

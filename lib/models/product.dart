@@ -8,14 +8,8 @@ class Product {
   final String imageUrl;
   final String category;
   final int stock;
-  final List<String>?
-  colors; // These might not be in API yet, keeping as nullable
-  final List<String>?
-  quantities; // These might not be in API yet, keeping as nullable
-
-  // Helper to get a valid image provider (network or asset)
-  // For now, we'll just expose the URL. UI can handle the NetworkImage logic.
-
+  final List<String>? colors;
+  final List<String>? quantities;
   final bool isPromoted;
   final double? discount;
 
