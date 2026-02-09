@@ -3,6 +3,7 @@ import 'package:pet_haven/controllers/cart_controller.dart';
 import 'package:pet_haven/models/product.dart';
 import 'package:pet_haven/services/product_service.dart';
 import 'package:pet_haven/views/checkout.dart';
+import 'package:pet_haven/widgets/quantity_selector.dart';
 import 'package:pet_haven/widgets/wide_button.dart';
 
 class Cart extends StatefulWidget {
@@ -160,14 +161,15 @@ class _CartState extends State<Cart> {
                         ],
                       ),
                     ),
-                    _QtyBox(
+                    QuantitySelector(
                       quantity: item.quantity,
-                      onDec: () async {
+                      min: 0,
+                      onDecrement: () async {
                         final next = item.quantity - 1;
                         await cart.update(product.id, next);
                         setState(() {});
                       },
-                      onInc: () async {
+                      onIncrement: () async {
                         final next = item.quantity + 1;
                         await cart.update(product.id, next);
                         setState(() {});
@@ -349,72 +351,6 @@ class _CartState extends State<Cart> {
           style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
         ),
       ],
-    );
-  }
-}
-
-/// Quantity control
-class _QtyBox extends StatelessWidget {
-  final int quantity;
-  final VoidCallback onDec;
-  final VoidCallback onInc;
-
-  const _QtyBox({
-    required this.quantity,
-    required this.onDec,
-    required this.onInc,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: scheme.outline.withValues(alpha: 0.4)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _squareBtn(
-            context,
-            icon: Icons.indeterminate_check_box,
-            onTap: onDec,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              '$quantity',
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-          ),
-          _squareBtn(context, icon: Icons.add_box, onTap: onInc),
-        ],
-      ),
-    );
-  }
-
-  Widget _squareBtn(
-    BuildContext context, {
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Ink(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Theme.of(
-            context,
-          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
-        ),
-        child: Icon(icon, size: 22),
-      ),
     );
   }
 }

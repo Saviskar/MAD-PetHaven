@@ -8,6 +8,7 @@ import 'package:pet_haven/widgets/custom_app_bar.dart';
 import 'package:pet_haven/widgets/hero_banner.dart';
 import 'package:pet_haven/widgets/input_field.dart';
 import 'package:pet_haven/widgets/our_category.dart';
+import 'package:pet_haven/widgets/section_header.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -46,10 +47,7 @@ class Home extends StatelessWidget {
             InputField(hintText: 'Search for pet supplies'),
             HeroBanner(),
             const SizedBox(height: 20),
-            const Text(
-              'Our Categories',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-            ),
+            const SectionHeader(title: 'Our Categories'),
 
             const SizedBox(height: 15),
 
@@ -97,14 +95,7 @@ class Home extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            const Text(
-              'Our Promotions',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
-            ),
+            const SectionHeader(title: 'Our Promotions'),
 
             SizedBox(height: 12),
 

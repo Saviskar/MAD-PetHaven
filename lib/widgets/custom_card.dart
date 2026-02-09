@@ -27,8 +27,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode =
-        theme.brightness == Brightness.dark; // 👈 detect dark mode
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return InkWell(
       onTap: onTap,
@@ -37,19 +36,11 @@ class CustomCard extends StatelessWidget {
         width: width,
         margin: margin ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          // 👇 Adaptive background color
-          color: isDarkMode
-              ? const Color(0xFF1E1E1E) // dark surface
-              : Colors.white,
-
+          color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
           borderRadius: BorderRadius.circular(16),
-
-          // 👇 Gentle border only in dark mode for separation
           border: isDarkMode
               ? Border.all(color: Colors.grey.withValues(alpha: 0.3))
               : null,
-
-          // 👇 Light shadow only in light mode
           boxShadow: isDarkMode
               ? []
               : [

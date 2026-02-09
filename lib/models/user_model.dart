@@ -13,9 +13,8 @@ class User {
   final String? addressLine;
   final String? city;
   final String? province;
-  final String? gender; // Best effort, might not be in backend yet
-  final String
-  profilePhotoUrl; // This was missing in class definition but used in constructor
+  final String? gender;
+  final String profilePhotoUrl;
 
   User({
     required this.id,
